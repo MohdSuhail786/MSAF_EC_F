@@ -1,0 +1,208 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+body{
+    font-family: Verdana, Geneva, sans-serif;;
+    font-size: 14px;
+    background: #fafafa;
+}
+.background {
+    background-color: #4481eb;
+    height: 100px;
+    width: 100%;
+}
+.background-color {
+    background-color: #4481F6;
+    height: 120px;
+    width: 100%;
+    position: fixed;
+    z-index: -1;
+}
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+  }
+  
+  /* On mouse-over, add a deeper shadow */
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  /* Add some padding inside the card container */
+  .card-container {
+    padding: 2px 16px;
+    
+  }
+.label-button {
+    background-color: #4481eb;
+    padding: 8px;
+    margin-right: 10px;
+    color: white;
+}
+
+.wrapper{
+    background: #fff;
+    width: 500px;
+    padding: 25px;
+    margin: auto;
+    border-top: 5px solid #4481eb;
+    
+}
+form {
+    padding: 0rem 2rem;
+}
+#custom-text {
+    max-width: 100px;
+    max-height: 5px;
+}
+.wrapper h2{
+    font-size: 24px;
+    line-height: 24px;
+    padding-bottom: 30px;
+    text-align: center;
+}
+.input-name{
+    width: 100%;
+    position: relative;
+    margin: 10px auto;
+    
+}
+.lock{
+    padding: 8px 11px;
+}
+.circle-o{
+    padding: 8px 11px;
+}
+.fa-calculator{
+    padding: 7px 10px;
+}
+.fa-line-chart{
+    padding: 6px 9px;
+}
+.fa-location-arrow{
+    padding: 8px 11px;
+}
+.fa-address-card{
+    padding: 6PX 9PX;
+}
+.fa-book{
+    padding: 8px 11px;
+}
+.fa-file-text-o{
+    padding: 8px 11px;
+}
+.fa-map-pin{
+    padding: 8px 11px;
+}
+
+.name{
+    width: 100%;
+    padding: 8px 0 8px 40px;
+}
+.input-name span{
+    /* margin-left: 35px; */
+}
+.text-name{
+    width: 100%;
+    padding: 8px 0 8px 40px;
+}
+.backcontainer {
+    /* margin-top: -75px; */
+    padding-top: 50px;
+}
+.input-name i{
+    position: absolute;
+    font-size: 18px;
+    border-right: 1px solid #cccccc;
+}
+.date{
+    padding: 8px 11px;
+}
+.text-name, .name{
+    border: 1px solid #cccccc;
+    outline: none;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    transition: all 0.30s ease-in-out;
+
+}
+.text-name:hover, .name:hover{
+    background-color: #fafafa;
+}
+.text-name:hover,.name:focus{
+    -webkit-box-shadow:0 0 2px 1px rgba(0, 119, 255, 0.5);
+    -moz-box-shadow:0 0 2px 1px rgba(0, 119, 255, 0.5);
+    box-shadow: 0 0 2px 1px rgba(0, 119, 255, 0.5);
+    border: 1px solid #4481eb;
+    background: #fafafa;
+}
+@-webkit-keyframes check {
+    0% { height: 0; width: 0; }
+    25% { height: 0; width: 7px; }
+    50% { height: 20px; width: 7px; }
+  }
+  
+  @keyframes check {
+    0% { height: 0; width: 0; }
+    25% { height: 0; width: 7px; }
+    50% { height: 20px; width: 7px; }
+  }
+.button{
+    background-color:rgb(47 123 255) ;
+    height: 35px;
+    line-height: 35px;
+    width: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18PX;
+    margin-bottom: 10px;
+}
+.button:hover{
+    background-color: #4e87eb;
+}
+.button:focus{
+    background-color: #4e87eb;
+}
+@media (max-width: 480px){
+    form {
+        padding: 0rem 1.5rem;
+    }
+    .wrapper{
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .input-name{
+        /* margin-bottom: -10px; */
+    }
+    .backcontainer {
+        padding-top: 0px;
+    }
+    .card-container {
+        padding: 0px;
+        
+      }
+    .name{
+        width: 100%;
+        padding: 8px 0 8px 40px;
+        margin-bottom: 10px;
+    }
+    .input-name span{
+        padding: 0;
+        margin: 0;
+    }
+    .background-color {
+        background-color: #fff;
+    }
+    .wrapper {
+        border-top: none;
+    }
+}
