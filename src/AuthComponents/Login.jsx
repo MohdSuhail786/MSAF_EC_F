@@ -38,7 +38,7 @@ const Login = (props) => {
           localStorage.email = data.email;
           localStorage.userId = data.userId;
           // props.setMessage(getItem("accessToken"));
-          // props.setMessage(data.message);
+          props.setMessage(data.message);
           props.setSeverity("success")
           props.setOpen(true);
           setTimeout(() => {
