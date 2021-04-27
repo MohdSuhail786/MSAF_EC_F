@@ -56,7 +56,7 @@ const CustomAdmin = () => {
   const csvLink = React.createRef();
   const [tabName, setTabName] = useState("Form");
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [employeeID, setEmployeeId] = useState(null);
   const [state, setState] = useState({
     top: false,
@@ -89,26 +89,46 @@ const CustomAdmin = () => {
     setState({ ...state, [anchor]: open });
   };
 
-
-
   const formClick = () => {
     setEmployeeId(null);
-    setData(null);
+    setData([]);
     setTabName("Form");
   };
 
   const recentClick = () => {
     setEmployeeId(null);
-    setData(null);
+    setData([]);
     setTabName("My Recent");
   };
 
   const employeeClick = () => {
     setEmployeeId(null);
-    setData(null);
+    setData([]);
     setTabName("Employee");
   };
 
+  const filterData = (data) => {
+    let filteredData = [];
+    data.forEach((e) => {
+      // delete e['id']
+      let obj = {
+        id: e["id"],
+        "Consumer Name": e["consumerName"],
+        "Father Name": e["fatherName"],
+        Address: e["address"],
+        District: e["district"],
+        "Account Id": e["accountId"],
+        "Meter Id": e["meterId"],
+        "Meter Position": e["meterPosition"],
+        "Selling Book Number": e["sellingBookNo"],
+        "Selling Page Number": e["sellingPageNo"],
+        "Installation Date": e["installationDate"],
+        "Plastic Seal": e["plasticSeal"],
+      };
+      filteredData.push(obj);
+    });
+    setData(filteredData);
+  };
 
   const list = (anchor) => (
     <div
@@ -174,10 +194,11 @@ const CustomAdmin = () => {
           <Typography variant="h6" className={classes.title}>
             {tabName}
           </Typography>
-          { data && <CSVLink
-          data={data}
-          target="_blank"
-        > <GetAppIcon style={{ color: "#fff"  }}/> </CSVLink>}
+          {data.length > 0 && (
+            <CSVLink data={data} target="_blank">
+              <GetAppIcon style={{ color: "#fff" }} />
+            </CSVLink>
+          )}
           <Button color="inherit" style={{ marginLeft: 10 }} onClick={logOut}>
             Logout
           </Button>
@@ -194,7 +215,14 @@ const CustomAdmin = () => {
         </SwipeableDrawer>
       </React.Fragment>
       {tabName === "Form" && <Form />}
-      {tabName === "My Recent" && <ListComponent callback={(data)=>{setData(data)}}/>}
+      {tabName === "My Recent" && (
+        <ListComponent
+          callback={(data) => {
+            
+            filterData(data);
+          }}
+        />
+      )}
       {tabName === "Employee" && (
         <EmployeeList
           callback={(e) => {
@@ -203,7 +231,15 @@ const CustomAdmin = () => {
           }}
         />
       )}
-      {employeeID && <ListComponent _id={employeeID} callback={(data)=>{setData(data)}}/>}
+      {employeeID && (
+        <ListComponent
+          _id={employeeID}
+          callback={(data) => {
+            
+            filterData(data);
+          }}
+        />
+      )}
       {open && (
         <SnackBarComponent
           setOpen={(e) => {
