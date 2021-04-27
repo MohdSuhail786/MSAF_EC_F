@@ -166,7 +166,7 @@ const Form = () => {
 
   return (
     <>
-      <div className="background-color"></div>
+      {/* <div className="background-color"></div> */}
       <div className="backcontainer ">
         <div className="card-container">
           <div className="wrapper card">
