@@ -4,6 +4,7 @@ import { fetchData } from "../MiddlewareComponents/RequestHandle";
 import Paper from "@material-ui/core/Paper";
 import { Button } from "@material-ui/core";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import Divider from "@material-ui/core/Divider";
 
 const ListComponent = (props) => {
   const [rows, setRows] = useState([]);
@@ -91,25 +92,17 @@ const ListComponent = (props) => {
                   Meter Id : {e.meterId ?? "NULL"}
                 </div>
                 <div style={{padding:20,maxHeight:190,maxWidth:250}}>
-                {"Consumer Name : " + e.consumerName ?? "NULL"} <br></br>
-                {"Father Name : " + e.fatherName ?? "NULL"}
+                {<b>Consumer Name : </b>}{ e.consumerName ?? "NULL"} <br></br>
+                <Divider />
+                {<b>Father Name : </b>}{ e.fatherName ?? "NULL"}
                 <br></br>
-                {/* {"Address : " + e.address ?? "NULL"} */}
-                {/* <br></br> */}
-                {"District : " + e.district ?? "NULL"}
+                <Divider />
+                {<b>District : </b>}{ e.district ?? "NULL"}
                 <br></br>
-                {"Account Id : " + e.accountId ?? "NULL"}
-                {/* <br></br>
-                {"Meter Id : " + e.meterId ?? "NULL"}
+                <Divider />
+                {<b>Account Id : </b>}{ e.accountId ?? "NULL"}
                 <br></br>
-                {"Meter Position : " + e.meterPosition ?? "NULL"}
-                <br></br>
-                {"Plastic Seal : " + e.plasticSeal ?? "NULL"} */}
-                {/* <br></br>
-                {"Selling Book No : " + e.sellingBookNo ?? "NULL"}
-                <br></br>
-                {"Selling Page No : " + e.sellingPageNo ?? "NULL"} */}
-                <br></br>
+                <Divider />
                 </div>
               </div>
               <div
