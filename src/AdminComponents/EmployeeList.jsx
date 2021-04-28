@@ -1,24 +1,50 @@
 import {
-  Card,
-  CardActionArea,
-  CardContent,
-  Divider,
   makeStyles,
-  Typography,
+ Button,
+
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import ListComponent from "../ListComponent/ListComponent";
 import { fetchData } from "../MiddlewareComponents/RequestHandle";
 
 const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
+  
+  container:{
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    margin:6,
+    height:"100vh",
+    width:"95vw"
   },
+  card:{
+  width:350,
+  backgroundColor:"whhiteSmoke",
+  border:"10px solid white",
+  margin:20,
+  boxShadow:"3px 12px 18px -8px #308edb"
+ 
+
+  },
+
+  upper_card:
+  {
+    padding:10
+  },
+  btnDiv:
+  {
+    textAlign:"center",
+    marginTop:50
+
+  },
+
+ 
 });
+
 
 const EmployeeList = (props) => {
   const [employees, setEmployees] = useState([]);
-
+ 
   useEffect(() => {
     let requestOptions = {
       method: "GET",
@@ -30,31 +56,35 @@ const EmployeeList = (props) => {
 
   const classes = useStyles();
   return (
-    <>
-      {employees.map((employee) => {
-        return (
+     <>
+        <div className={classes.container}>
+          {employees.map((employee)=>{
+          return(
           <>
-            <Card className={classes.root} onClick={() => {props.callback(employee)}}>
-              <CardActionArea>
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="h5">
-                    {employee.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    {employee.email}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-            <Divider />
-          </>
-        );
-      })}
-    </>
+         <div className={classes.card}        
+         >
+           <div className={classes.inner_card}
+       
+          >
+             <div className={classes.upper_card}>
+            <p style={{color:"blue",padding:10}}><span style={{color:"DarkBlue"}}>Name : </span>{employee.name}</p>
+            <hr></hr>
+            <p style={{color:"blue",padding:10}}><span style={{color:"DarkBlue"}}>Email : </span>{employee.email}</p>
+          
+           < hr></hr>
+         
+            </div>
+            <div className={classes.btnDiv}> 
+            <Button variant="contained" style={{backgroundColor:"#3279fa",color:"white"}} >
+                 Learn More
+            </Button>
+            </div>
+           </div>
+           </div>
+         </>
+          )
+})}  </div>
+     </>
   );
 };
 
