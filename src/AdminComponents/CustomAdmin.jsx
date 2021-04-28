@@ -59,6 +59,7 @@ const CustomAdmin = () => {
   const [tabName, setTabName] = useState("Form");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
+  const [editForm, setEditForm] = useState(null);
   const [employeeID, setEmployeeId] = useState(null);
   const [state, setState] = useState({
     top: false,
@@ -95,12 +96,14 @@ const CustomAdmin = () => {
     setEmployeeId(null);
     setData([]);
     setTabName("Form");
+    setEditForm(null);
   };
 
   const filterDataScreen = () => {
     setEmployeeId(null);
     setData([]);
     setTabName("Filter Data");
+    setEditForm(null);
   };
 
 
@@ -114,6 +117,7 @@ const CustomAdmin = () => {
     setEmployeeId(null);
     setData([]);
     setTabName("Employee");
+    setEditForm(null);
   };
 
   const filterData = (data) => {
@@ -231,11 +235,13 @@ const CustomAdmin = () => {
         </SwipeableDrawer>
       </React.Fragment>
       {tabName === "Form" && <Form />}
+      {tabName==="Edit Form" && <Form formData={editForm} />}
       {tabName === "My Recent" && (
         <ListComponent
           callback={(data) => {
             filterData(data);
           }}
+          loadForm={(e)=>{setEditForm(e); setTabName("Edit Form"); setEmployeeId(null); setData([])}}
         />
       )}
       {tabName === "Employee" && (
@@ -243,6 +249,7 @@ const CustomAdmin = () => {
           callback={(e) => {
             setEmployeeId(e._id);
             setTabName(e.name);
+            setEditForm(null)
           }}
         />
       )}
@@ -255,6 +262,7 @@ const CustomAdmin = () => {
           callback={(data) => {
             filterData(data);
           }}
+          loadForm={(e)=>{setEditForm(e);setTabName("Edit Form");setEmployeeId(null);setData([])}}
         />
       )}
       {open && (

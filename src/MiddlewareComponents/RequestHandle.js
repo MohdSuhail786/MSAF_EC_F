@@ -31,6 +31,7 @@ export async function fetchData(path,requestOptions) {
                     console.log("access token refreshed by using refreshtoken",data)
                     localStorage.accessToken  = data.accessToken
                     localStorage.refreshToken = data.refreshToken
+                    if (this)
                     response = this.fetchData(path,requestOptions,payload)
                 }
                 else {

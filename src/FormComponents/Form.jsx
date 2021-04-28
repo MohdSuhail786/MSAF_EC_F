@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { fetchData } from "../MiddlewareComponents/RequestHandle.js";
 import "./form.css";
@@ -16,7 +16,7 @@ import SnackBarComponent from "../CommonComponents/SnackBarComponent";
 //   },
 // }));
 
-const Form = () => {
+const Form = (props) => {
   let history = useHistory();
 
   const [fileName, setfileName] = useState("No file");
@@ -35,8 +35,32 @@ const Form = () => {
   const [message, setMessage] = useState();
   const [severity, setSeverity] = useState();
   const [open, setOpen] = useState();
+  const [_id, set_Id] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
+
+  useEffect(()=>{
+    if (props.formData) {
+      setConsumerName(props.formData.consumerName);
+      setFatherName(props.formData.fatherName);
+      setAddress(props.formData.address);
+      setAccountId(props.formData.accountId);
+      setMeterId(props.formData.meterId);
+      setMeterPosition(props.formData.meterPosition);
+      setDistrict(props.formData.district);
+      setSellingPageNo(props.formData.sellingPageNo);
+      setSellingBookNo(props.formData.sellingBookNo);
+      setInstallationDate(props.formData.installationDate);
+      // setInstallationDate(props.formData.);
+      setPlasticSeal(props.formData.plasticSeal);
+      setfileName("No file");
+      setFilePath("");
+      set_Id(props.formData._id);
+      setEmployeeId(props.formData.userId);
+    }
+  },[])
 
   const clearForm = () => {
+    set_Id("")
     setConsumerName("");
     setFatherName("");
     setAddress("");
@@ -51,6 +75,7 @@ const Form = () => {
     setPlasticSeal("");
     setfileName("No file");
     setFilePath("");
+    setEmployeeId("");
   };
 
   const validateData = (payload)=> {
@@ -77,6 +102,7 @@ const Form = () => {
 
   const submitForm = () => {
     console.log(
+      _id,
       consumerName,
       fatherName,
       address,
@@ -94,6 +120,7 @@ const Form = () => {
     data.append("fileUploaded", filePath);
     console.log(data);
     let payload = {
+      _id,  
       consumerName,
       fatherName,
       address,
@@ -105,6 +132,7 @@ const Form = () => {
       sellingPageNo,
       installationDate,
       plasticSeal,
+      employeeId,
       originalFileName: filePath ? filePath.name : null,
     };
     let result = validateData(payload)

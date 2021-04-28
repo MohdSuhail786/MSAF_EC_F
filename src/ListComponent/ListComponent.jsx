@@ -5,6 +5,8 @@ import Paper from "@material-ui/core/Paper";
 import { Button } from "@material-ui/core";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import Divider from "@material-ui/core/Divider";
+import Form from "../FormComponents/Form";
+import Login from "../AuthComponents/Login";
 
 const ListComponent = (props) => {
   const [rows, setRows] = useState([]);
@@ -122,6 +124,7 @@ const ListComponent = (props) => {
                 <Button
                   variant="contained"
                   style={{ background: "#54C401", color: "#fff" }}
+                  onClick={()=>{console.log(e); props.loadForm(e)}}
                 >
                   Edit
                 </Button>
