@@ -10,6 +10,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
+import FilterListIcon from '@material-ui/icons/FilterList';
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -31,6 +32,7 @@ import {
   getGridDateOperators,
   setGridPageStateUpdate,
 } from "@material-ui/data-grid";
+import FilterData from "./FilterData";
 
 const useStyles = makeStyles({
   list: {
@@ -95,6 +97,13 @@ const CustomAdmin = () => {
     setTabName("Form");
   };
 
+  const filterDataScreen = () => {
+    setEmployeeId(null);
+    setData([]);
+    setTabName("Filter Data");
+  };
+
+
   const recentClick = () => {
     setEmployeeId(null);
     setData([]);
@@ -109,6 +118,7 @@ const CustomAdmin = () => {
 
   const filterData = (data) => {
     let filteredData = [];
+    if (data  )
     data.forEach((e) => {
       // delete e['id']
       let obj = {
@@ -174,6 +184,12 @@ const CustomAdmin = () => {
           </ListItemIcon>
           <ListItemText primary={"Employee"} />
         </ListItem>
+        <ListItem button key={"Filter Data"} onClick={filterDataScreen}>
+          <ListItemIcon>
+            <FilterListIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Filter Data"} />
+        </ListItem>
       </List>
     </div>
   );
@@ -218,7 +234,6 @@ const CustomAdmin = () => {
       {tabName === "My Recent" && (
         <ListComponent
           callback={(data) => {
-            
             filterData(data);
           }}
         />
@@ -231,11 +246,13 @@ const CustomAdmin = () => {
           }}
         />
       )}
+      {tabName === "Filter Data" && (
+        <FilterData />
+      )}
       {employeeID && (
         <ListComponent
           _id={employeeID}
           callback={(data) => {
-            
             filterData(data);
           }}
         />

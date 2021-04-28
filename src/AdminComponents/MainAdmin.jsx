@@ -1,6 +1,5 @@
 import React from 'react'
 import CustomAdmin from './CustomAdmin'
-import Admin from './Admin'
 
 const MainAdmin = () => {
     return (
