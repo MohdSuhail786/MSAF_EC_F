@@ -79,8 +79,8 @@ const ListComponent = (props) => {
             <Paper
               elevation={3}
               style={{
-                minWidth: 250,
-                maxWidth: 250,
+                minWidth: 300,
+                maxWidth: 300,
                 maxHeight: 300,
                 minHeight: 300,
                 display: "inline-block",
