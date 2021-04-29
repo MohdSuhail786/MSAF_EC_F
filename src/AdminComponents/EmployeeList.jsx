@@ -5,7 +5,7 @@ import { fetchData } from "../MiddlewareComponents/RequestHandle";
 
 const useStyles = makeStyles({
   card: {
-    width: 350,
+    width: 300,
     backgroundColor: "whhiteSmoke",
     border: "10px solid white",
     margin: 20,
