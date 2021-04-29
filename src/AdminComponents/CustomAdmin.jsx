@@ -10,9 +10,11 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
-import FilterListIcon from '@material-ui/icons/FilterList';
+import FilterListIcon from "@material-ui/icons/FilterList";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import AppBar from "@material-ui/core/AppBar";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Fab from "@material-ui/core/Fab";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -93,6 +95,9 @@ const CustomAdmin = () => {
   };
 
   const formClick = () => {
+    if (tabName == "Form") {
+      return;
+    }
     setEmployeeId(null);
     setData([]);
     setTabName("Form");
@@ -100,16 +105,21 @@ const CustomAdmin = () => {
   };
 
   const filterDataScreen = () => {
+    if (tabName == "Filter Data") {
+      return
+    }
     setEmployeeId(null);
     setData([]);
     setTabName("Filter Data");
     setEditForm(null);
   };
 
-
   const recentClick = () => {
+    if (tabName === "My Recent") {
+      return;
+    }
     setEmployeeId(null);
-    setData([]);
+    setData([])
     setTabName("My Recent");
   };
 
@@ -122,25 +132,25 @@ const CustomAdmin = () => {
 
   const filterData = (data) => {
     let filteredData = [];
-    if (data  )
-    data.forEach((e) => {
-      // delete e['id']
-      let obj = {
-        id: e["id"],
-        "Consumer Name": e["consumerName"],
-        "Father Name": e["fatherName"],
-        Address: e["address"],
-        District: e["district"],
-        "Account Id": e["accountId"],
-        "Meter Id": e["meterId"],
-        "Meter Position": e["meterPosition"],
-        "Selling Book Number": e["sellingBookNo"],
-        "Selling Page Number": e["sellingPageNo"],
-        "Installation Date": e["installationDate"],
-        "Plastic Seal": e["plasticSeal"],
-      };
-      filteredData.push(obj);
-    });
+    if (data)
+      data.forEach((e) => {
+        // delete e['id']
+        let obj = {
+          id: e["id"],
+          "Consumer Name": e["consumerName"],
+          "Father Name": e["fatherName"],
+          Address: e["address"],
+          District: e["district"],
+          "Account Id": e["accountId"],
+          "Meter Id": e["meterId"],
+          "Meter Position": e["meterPosition"],
+          "Selling Book Number": e["sellingBookNo"],
+          "Selling Page Number": e["sellingPageNo"],
+          "Installation Date": e["installationDate"],
+          "Plastic Seal": e["plasticSeal"],
+        };
+        filteredData.push(obj);
+      });
     setData(filteredData);
   };
 
@@ -214,9 +224,10 @@ const CustomAdmin = () => {
           <Typography variant="h6" className={classes.title}>
             {tabName}
           </Typography>
+          { (window.innerWidth > 480 && data.length > 0 ) && <FilterListIcon style={{margin:10}} onClick={()=>{alert("IN progress")}}/>}
           {data.length > 0 && (
             <CSVLink data={data} target="_blank">
-              <GetAppIcon style={{ color: "#fff" }} />
+              <GetAppIcon style={{ color: "#fff",margin:10 }} />
             </CSVLink>
           )}
           <Button color="inherit" style={{ marginLeft: 10 }} onClick={logOut}>
@@ -235,13 +246,18 @@ const CustomAdmin = () => {
         </SwipeableDrawer>
       </React.Fragment>
       {tabName === "Form" && <Form />}
-      {tabName==="Edit Form" && <Form formData={editForm} />}
+      {tabName === "Edit Form" && <Form formData={editForm} />}
       {tabName === "My Recent" && (
         <ListComponent
           callback={(data) => {
             filterData(data);
           }}
-          loadForm={(e)=>{setEditForm(e); setTabName("Edit Form"); setEmployeeId(null); setData([])}}
+          loadForm={(e) => {
+            setEditForm(e);
+            setTabName("Edit Form");
+            setEmployeeId(null);
+            setData([]);
+          }}
         />
       )}
       {tabName === "Employee" && (
@@ -249,20 +265,23 @@ const CustomAdmin = () => {
           callback={(e) => {
             setEmployeeId(e._id);
             setTabName(e.name);
-            setEditForm(null)
+            setEditForm(null);
           }}
         />
       )}
-      {tabName === "Filter Data" && (
-        <FilterData />
-      )}
+      {tabName === "Filter Data" && <FilterData />}
       {employeeID && (
         <ListComponent
           _id={employeeID}
           callback={(data) => {
             filterData(data);
           }}
-          loadForm={(e)=>{setEditForm(e);setTabName("Edit Form");setEmployeeId(null);setData([])}}
+          loadForm={(e) => {
+            setEditForm(e);
+            setTabName("Edit Form");
+            setEmployeeId(null);
+            setData([]);
+          }}
         />
       )}
       {open && (
@@ -274,6 +293,16 @@ const CustomAdmin = () => {
           severity="success"
         />
       )}
+      { (window.innerWidth <= 480 && data.length > 0 ) && 
+       <Fab
+        color="secondary"
+        aria-label="add"
+        onClick={() =>{alert("In progress")}}
+        style={{ position: "fixed", bottom: 20, right: 20 }}
+      >
+        <FilterListIcon style={{ color: "#fff" }} />
+      </Fab>
+      }
     </div>
   );
 };

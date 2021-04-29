@@ -4,14 +4,6 @@ import ListComponent from "../ListComponent/ListComponent";
 import { fetchData } from "../MiddlewareComponents/RequestHandle";
 
 const useStyles = makeStyles({
-  container: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    margin: 6,
-    height: "100vh",
-    width: "95vw",
-  },
   card: {
     width: 350,
     backgroundColor: "whhiteSmoke",
@@ -44,11 +36,11 @@ const EmployeeList = (props) => {
   const classes = useStyles();
   return (
     <>
-      <div className={classes.container}>
+      <div style={{ textAlign:"center",marginBottom:100}}>
         {employees.map((employee) => {
           return (
             <>
-              <div className={classes.card}>
+              <div className={classes.card} style={{display:"inline-block"}}>
                 <div className={classes.inner_card}>
                   <div className={classes.upper_card}>
                     <p style={{ color: "blue", padding: 10 }}>
@@ -63,11 +55,7 @@ const EmployeeList = (props) => {
 
                     <hr></hr>
                   </div>
-                  {/* <div className={classes.btnDiv}> 
-            <Button variant="contained" style={{backgroundColor:"#3279fa",color:"white"}} >
-                 Learn More
-            </Button>
-            </div> */}
+
                   <div
                     className={classes.btnDiv}
                     style={{
@@ -76,7 +64,6 @@ const EmployeeList = (props) => {
                       alignItems: "center",
                     }}
                   >
-                    
                     <Button
                       variant="contained"
                       style={{ backgroundColor: "#4481eb", color: "white" }}
@@ -84,7 +71,6 @@ const EmployeeList = (props) => {
                         alert("In progress");
                       }}
                     >
-                      
                       Delete
                     </Button>
                     <Button
@@ -94,13 +80,11 @@ const EmployeeList = (props) => {
                         props.callback(employee);
                       }}
                     >
-                      
                       View
                     </Button>
                   </div>
                 </div>
               </div>
-              {/* </div> */}
             </>
           );
         })}

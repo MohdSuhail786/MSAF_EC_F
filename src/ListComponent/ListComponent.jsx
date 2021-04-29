@@ -73,7 +73,7 @@ const ListComponent = (props) => {
           pageSize={8}
         />
       </div> */}
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: "center",marginBottom:100 }}>
         {rows.map((e) => {
           return (
             <Paper
