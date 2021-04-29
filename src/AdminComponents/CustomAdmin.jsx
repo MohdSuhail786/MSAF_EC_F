@@ -10,6 +10,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
+import FilterListIcon from '@material-ui/icons/FilterList';
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -31,6 +32,7 @@ import {
   getGridDateOperators,
   setGridPageStateUpdate,
 } from "@material-ui/data-grid";
+import FilterData from "./FilterData";
 
 const useStyles = makeStyles({
   list: {
@@ -57,6 +59,7 @@ const CustomAdmin = () => {
   const [tabName, setTabName] = useState("Form");
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
+  const [editForm, setEditForm] = useState(null);
   const [employeeID, setEmployeeId] = useState(null);
   const [state, setState] = useState({
     top: false,
@@ -93,7 +96,16 @@ const CustomAdmin = () => {
     setEmployeeId(null);
     setData([]);
     setTabName("Form");
+    setEditForm(null);
   };
+
+  const filterDataScreen = () => {
+    setEmployeeId(null);
+    setData([]);
+    setTabName("Filter Data");
+    setEditForm(null);
+  };
+
 
   const recentClick = () => {
     setEmployeeId(null);
@@ -105,10 +117,12 @@ const CustomAdmin = () => {
     setEmployeeId(null);
     setData([]);
     setTabName("Employee");
+    setEditForm(null);
   };
 
   const filterData = (data) => {
     let filteredData = [];
+    if (data  )
     data.forEach((e) => {
       // delete e['id']
       let obj = {
@@ -174,6 +188,12 @@ const CustomAdmin = () => {
           </ListItemIcon>
           <ListItemText primary={"Employee"} />
         </ListItem>
+        <ListItem button key={"Filter Data"} onClick={filterDataScreen}>
+          <ListItemIcon>
+            <FilterListIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Filter Data"} />
+        </ListItem>
       </List>
     </div>
   );
@@ -215,12 +235,13 @@ const CustomAdmin = () => {
         </SwipeableDrawer>
       </React.Fragment>
       {tabName === "Form" && <Form />}
+      {tabName==="Edit Form" && <Form formData={editForm} />}
       {tabName === "My Recent" && (
         <ListComponent
           callback={(data) => {
-            
             filterData(data);
           }}
+          loadForm={(e)=>{setEditForm(e); setTabName("Edit Form"); setEmployeeId(null); setData([])}}
         />
       )}
       {tabName === "Employee" && (
@@ -228,16 +249,20 @@ const CustomAdmin = () => {
           callback={(e) => {
             setEmployeeId(e._id);
             setTabName(e.name);
+            setEditForm(null)
           }}
         />
+      )}
+      {tabName === "Filter Data" && (
+        <FilterData />
       )}
       {employeeID && (
         <ListComponent
           _id={employeeID}
           callback={(data) => {
-            
             filterData(data);
           }}
+          loadForm={(e)=>{setEditForm(e);setTabName("Edit Form");setEmployeeId(null);setData([])}}
         />
       )}
       {open && (
