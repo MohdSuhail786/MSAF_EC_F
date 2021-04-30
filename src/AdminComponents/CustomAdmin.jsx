@@ -224,7 +224,7 @@ const CustomAdmin = () => {
           <Typography variant="h6" className={classes.title}>
             {tabName}
           </Typography>
-          { (window.innerWidth > 480 && data.length > 0 ) && <FilterListIcon style={{margin:10}} onClick={()=>{alert("IN progress")}}/>}
+          { (window.innerWidth > 480 && data.length > 0 ) &&<Button color="inherit"  onClick={()=>{alert("In progress")}}> <FilterListIcon style={{margin:10}} /></Button>}
           {data.length > 0 && (
             <CSVLink data={data} target="_blank">
               <GetAppIcon style={{ color: "#fff",margin:10 }} />

@@ -35,7 +35,7 @@ const Form = (props) => {
   const [message, setMessage] = useState();
   const [severity, setSeverity] = useState();
   const [open, setOpen] = useState();
-  const [_id, set_Id] = useState("");
+  const [user_id, setuser_id] = useState("");
   const [employeeId, setEmployeeId] = useState("");
 
   useEffect(()=>{
@@ -54,13 +54,13 @@ const Form = (props) => {
       setPlasticSeal(props.formData.plasticSeal);
       setfileName("No file");
       setFilePath("");
-      set_Id(props.formData._id);
+      setuser_id(props.formData._id);
       setEmployeeId(props.formData.userId);
     }
   },[])
 
   const clearForm = () => {
-    set_Id("")
+    setuser_id("")
     setConsumerName("");
     setFatherName("");
     setAddress("");
@@ -102,7 +102,7 @@ const Form = (props) => {
 
   const submitForm = () => {
     console.log(
-      _id,
+      user_id,
       consumerName,
       fatherName,
       address,
@@ -120,7 +120,7 @@ const Form = (props) => {
     data.append("fileUploaded", filePath);
     console.log(data);
     let payload = {
-      _id,  
+      user_id,  
       consumerName,
       fatherName,
       address,
