@@ -13,12 +13,11 @@ import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import AppBar from "@material-ui/core/AppBar";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Fab from "@material-ui/core/Fab";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import { CSVDownload, CSVLink } from "react-csv";
+import { CSVLink } from "react-csv";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Card, CardActionArea, CardContent } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
@@ -27,14 +26,7 @@ import SnackBarComponent from "../CommonComponents/SnackBarComponent";
 import ListComponent from "../ListComponent/ListComponent";
 import EmployeeList from "./EmployeeList";
 import SearchBar from "../CommonComponents/SearchBar";
-
 import GetAppIcon from "@material-ui/icons/GetApp";
-import { PinDropSharp } from "@material-ui/icons";
-import { fetchData } from "../MiddlewareComponents/RequestHandle";
-import {
-  getGridDateOperators,
-  setGridPageStateUpdate,
-} from "@material-ui/data-grid";
 
 const useStyles = makeStyles({
   list: {

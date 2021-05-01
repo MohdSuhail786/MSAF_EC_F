@@ -155,7 +155,7 @@ form {
   }
 .button{
     background-color:rgb(47 123 255) ;
-    height: 35px;
+    /* height: 35px; */
     line-height: 35px;
     width: 100%;
     border: none;

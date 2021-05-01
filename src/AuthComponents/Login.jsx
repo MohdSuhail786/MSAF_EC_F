@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom'
+import CircularProgressBar from '../MiddlewareComponents/CircularProgressBar';
 // import { setItem,getItem } from '../MiddlewareComponents/Storage'
 
 const Login = (props) => {
   
   const [email,setEmail] = useState()
   const [password,setPassword] = useState()
+  const [progressBar,setProgressBar] = useState(false)
   let history = useHistory();
 
   const loginBtn = () => {
+    setProgressBar(true)
     console.log(email,password)
     let payload = {
       email: email,
@@ -24,6 +27,7 @@ const Login = (props) => {
     fetch("http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/login",requestOptions)
       .then(res => res.json())
       .then(data => {
+        setProgressBar(false);
         console.log(data)  
         if (data.error !== undefined) {
           props.setMessage(data.error);
@@ -37,7 +41,6 @@ const Login = (props) => {
           localStorage.name = data.name;
           localStorage.email = data.email;
           localStorage.userId = data.userId;
-          // props.setMessage(getItem("accessToken"));
           props.setMessage(data.message);
           props.setSeverity("success")
           props.setOpen(true);
@@ -67,6 +70,7 @@ const Login = (props) => {
               <input type="password" name="password" placeholder="Password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
             </div>
             <input type="button" value="Login" className="btn solid" onClick={loginBtn}/>
+            {progressBar && <CircularProgressBar />}
           </form>
     ) 
 }

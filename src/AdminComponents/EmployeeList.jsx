@@ -3,6 +3,8 @@ import React, { useEffect, useState, useRef } from "react";
 import ListComponent from "../ListComponent/ListComponent";
 import { fetchData } from "../MiddlewareComponents/RequestHandle";
 import SnackBarComponent from "../CommonComponents/SnackBarComponent";
+import CircularProgressBar from "../MiddlewareComponents/CircularProgressBar";
+import { CenterFocusStrong } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   card: {
@@ -27,44 +29,68 @@ const EmployeeList = (props) => {
   const [open, setOpen] = useState();
   const [message, setMessage] = useState();
   const [severity, setSeverity] = useState();
+  const [progressBar, setProgressBar] = useState(false);
+  const [progressBarD, setProgressBarD] = useState(false);
+  const inputEl = useRef(null);
 
   useEffect(() => {
+    setProgressBar(true);
     let requestOptions = {
       method: "GET",
     };
     fetchData("/getEmployees", requestOptions).then((data) => {
       setEmployees(data.employees);
+      setProgressBar(false);
     });
   }, [open]);
 
   const deleteEmployee = (employeeId) => {
+    
+    console.log("DELETE CLICKED")
+    setProgressBarD(true);
     let requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({employeeId: employeeId})
+      body: JSON.stringify({ employeeId: employeeId }),
     };
     fetchData("/deleteEmployee", requestOptions).then((data) => {
-      
+      setProgressBarD(false);
       if (data == "Error") {
         setMessage("Some error occurred");
-        setSeverity("error")
-        setOpen(true)
+        setSeverity("error");
+        setOpen(true);
         return;
       }
       setMessage(data);
-      setSeverity("success")
-      setOpen(true)
+      setSeverity("success");
+      setOpen(true);
     });
+  };
+  const classes = useStyles();
+
+  if (progressBar) {
+    return (
+      <div
+        style={{
+          height: "90vh",
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgressBar />
+      </div>
+    );
   }
 
-  const classes = useStyles();
   return (
     <>
-      <div style={{ textAlign:"center",marginBottom:100}}>
+      <div style={{ textAlign: "center", marginBottom: 100 }} >
         {employees.map((employee) => {
           return (
             <>
-              <div className={classes.card} style={{display:"inline-block"}}>
+              <div className={classes.card} style={{ display: "inline-block" }}>
                 <div className={classes.inner_card}>
                   <div className={classes.upper_card}>
                     <p style={{ color: "blue", padding: 10 }}>
@@ -92,12 +118,13 @@ const EmployeeList = (props) => {
                       variant="contained"
                       style={{ backgroundColor: "#4481eb", color: "white" }}
                       onClick={() => {
-                        deleteEmployee(employee._id)
-
+                        console.log(inputEl.current)
+                        deleteEmployee(employee._id);
                       }}
                     >
                       Delete
                     </Button>
+                    
                     <Button
                       variant="contained"
                       style={{ backgroundColor: "#54C401", color: "white" }}
@@ -114,7 +141,16 @@ const EmployeeList = (props) => {
           );
         })}
       </div>
-      { open && <SnackBarComponent setOpen = {(e) => {setOpen(false)}} message={message} severity={severity}/> }
+      {open && (
+        <SnackBarComponent
+          setOpen={(e) => {
+            setOpen(false);
+          }}
+          message={message}
+          severity={severity}
+        />
+      )}
+      {progressBarD && <div style={{position:"absolute", top:50,left:0,height:"100%",width:"100%",backgroundColor:"rgb(123 123 123 / 69%)"}}><CircularProgressBar style={{justifyContent:"center",height:"100%",alignItems:"center"}}/></div> }
     </>
   );
 };

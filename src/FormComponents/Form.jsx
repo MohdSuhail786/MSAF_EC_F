@@ -5,6 +5,7 @@ import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import "./form.css";
 import SnackBarComponent from "../CommonComponents/SnackBarComponent";
 import Button from "@material-ui/core/Button";
+import CircularProgressBar from "../MiddlewareComponents/CircularProgressBar.jsx";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -39,6 +40,7 @@ const Form = (props) => {
   const [open, setOpen] = useState();
   const [user_id, setuser_id] = useState("");
   const [employeeId, setEmployeeId] = useState("");
+  const [progressBar,setProgressBar] = useState(false)
 
   useEffect(()=>{
     if (props.formData) {
@@ -86,24 +88,25 @@ const Form = (props) => {
       message : "",
       status : true
     }
-    if (payload.meterId === "") {
+    if (!payload.meterId) {
       result.message = "Please enter meter id"
       result.status = false
     }
-    if (payload.fatherName === "") {
+    if (!payload.fatherName) {
       result.message = "Please enter father's name"
       result.status = false
     }
-    if (payload.consumerName === "") {
+    if (!payload.consumerName) {
       result.message = "Please enter consumer name"
       result.status = false
     }
     
-    
+    result.status = true;
     return result;
   }
 
   const submitForm = () => {
+    setProgressBar(true)
     console.log(
       user_id,
       consumerName,
@@ -136,13 +139,14 @@ const Form = (props) => {
       installationDate,
       plasticSeal,
       employeeId,
-      originalFileName: filePath ? filePath.name : props.formData.originalFileName,
+      originalFileName: filePath ? filePath.name : (props.formData) ? props.formData.originalFileName : null,
     };
     let result = validateData(payload)
     if (!result.status) {
       setSeverity("warning");
       setMessage(result.message);
       setOpen(true)
+      setProgressBar(false)
       return;
     }
 
@@ -152,12 +156,13 @@ const Form = (props) => {
       body: data,
     };
     fetchData("/upload", requestOptions).then((data) => {
-
+      
       if (data == null) {
         setSeverity("error");
         setMessage("Unable to submit the form. Please login again.");
         setOpen(true)
         setTimeout(() => {
+          setProgressBar(false)
           return history.push("/");
         }, 2000);
       }
@@ -171,6 +176,7 @@ const Form = (props) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       }).then((data) => {
+        setProgressBar(false)
         setMessage(data.message);
         setSeverity("success");
         setOpen(true)
@@ -342,19 +348,22 @@ const Form = (props) => {
                 {/* <button type="button" id="custom-button" onClick={customButtonClick}>Choose photo</button> */}
                 <span id="custom-text">{fileName} </span>
               </div>
-              <div className="input-name">
+              <div className="input-name" style={{display:"flex",justifyContent:"space-evenly"}}>
                 <input
                   className="button"
                   type="button"
+                  style={{marginBottom:0}}
                   onClick={submitForm}
                   value="submit"
                 />
+                {/* {progressBar && <CircularProgressBar style={{marginLeft:15}}/>} */}
               </div>
               {props.formData && (
                 <div className="input-name" style={{marginTop:0}}>
                 <input
                   className="button"
                   type="button"
+                  
                   onClick={() => {
                     props.callback()
                   }}
@@ -367,6 +376,7 @@ const Form = (props) => {
         </div>
       </div>
       { open && <SnackBarComponent setOpen = {(e) => {setOpen(false)}} message={message} severity={severity}/> }
+      {progressBar && <div style={{position:"absolute", top:50,left:0,height:"100%",width:"100%",backgroundColor:"rgb(123 123 123 / 69%)"}}><CircularProgressBar style={{justifyContent:"center",height:"100%",alignItems:"center"}}/></div> }
     </>
   );
 };
