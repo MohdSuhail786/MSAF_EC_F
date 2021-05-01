@@ -375,7 +375,7 @@ const Form = (props) => {
         </div>
       </div>
       { open && <SnackBarComponent setOpen = {(e) => {setOpen(false)}} message={message} severity={severity}/> }
-      {progressBar && <div style={{position:"absolute", top:50,left:0,height:"100%",width:"100%",backgroundColor:"rgb(123 123 123 / 69%)"}}><CircularProgressBar style={{justifyContent:"center",height:"100%",alignItems:"center"}}/></div> }
+      {progressBar && <div style={{position:"fixed", top:50,left:0,height:"100%",width:"100%",backgroundColor:"rgb(123 123 123 / 69%)"}}><CircularProgressBar style={{justifyContent:"center",height:"100%",alignItems:"center"}}/></div> }
     </>
   );
 };

@@ -127,9 +127,10 @@ const ListComponent = (props) => {
                 >
                   <Button
                     variant="contained"
+                    onClick={()=>{alert("In Progress..")}}
                     style={{ background: "#4481eb", color: "#fff" }}
                   >
-                    Photo{" "}
+                    Photo
                     <GetAppIcon style={{ marginLeft: 5, color: "#fff" }} />
                   </Button>
                   <Button
@@ -202,9 +203,10 @@ const ListComponent = (props) => {
                 >
                   <Button
                     variant="contained"
+                    onClick={() => {alert("In Progress")}}
                     style={{ background: "#4481eb", color: "#fff" }}
                   >
-                    Photo{" "}
+                    Photo
                     <GetAppIcon style={{ marginLeft: 5, color: "#fff" }} />
                   </Button>
                   <Button

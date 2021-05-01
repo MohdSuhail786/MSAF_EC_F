@@ -150,7 +150,7 @@ const EmployeeList = (props) => {
           severity={severity}
         />
       )}
-      {progressBarD && <div style={{position:"absolute", top:50,left:0,height:"100%",width:"100%",backgroundColor:"rgb(123 123 123 / 69%)"}}><CircularProgressBar style={{justifyContent:"center",height:"100%",alignItems:"center"}}/></div> }
+      {progressBarD && <div style={{position:"fixed", top:50,left:0,height:"100%",width:"100%",backgroundColor:"rgb(123 123 123 / 69%)"}}><CircularProgressBar style={{justifyContent:"center",height:"100%",alignItems:"center"}}/></div> }
     </>
   );
 };
