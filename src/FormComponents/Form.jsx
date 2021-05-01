@@ -101,7 +101,6 @@ const Form = (props) => {
       result.status = false
     }
     
-    result.status = true;
     return result;
   }
 
