@@ -2,6 +2,7 @@ import { makeStyles, Button } from "@material-ui/core";
 import React, { useEffect, useState, useRef } from "react";
 import ListComponent from "../ListComponent/ListComponent";
 import { fetchData } from "../MiddlewareComponents/RequestHandle";
+import SnackBarComponent from "../CommonComponents/SnackBarComponent";
 
 const useStyles = makeStyles({
   card: {
@@ -23,6 +24,9 @@ const useStyles = makeStyles({
 
 const EmployeeList = (props) => {
   const [employees, setEmployees] = useState([]);
+  const [open, setOpen] = useState();
+  const [message, setMessage] = useState();
+  const [severity, setSeverity] = useState();
 
   useEffect(() => {
     let requestOptions = {
@@ -31,7 +35,27 @@ const EmployeeList = (props) => {
     fetchData("/getEmployees", requestOptions).then((data) => {
       setEmployees(data.employees);
     });
-  }, []);
+  }, [open]);
+
+  const deleteEmployee = (employeeId) => {
+    let requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({employeeId: employeeId})
+    };
+    fetchData("/deleteEmployee", requestOptions).then((data) => {
+      
+      if (data == "Error") {
+        setMessage("Some error occurred");
+        setSeverity("error")
+        setOpen(true)
+        return;
+      }
+      setMessage(data);
+      setSeverity("success")
+      setOpen(true)
+    });
+  }
 
   const classes = useStyles();
   return (
@@ -68,7 +92,8 @@ const EmployeeList = (props) => {
                       variant="contained"
                       style={{ backgroundColor: "#4481eb", color: "white" }}
                       onClick={() => {
-                        alert("In progress");
+                        deleteEmployee(employee._id)
+
                       }}
                     >
                       Delete
@@ -89,6 +114,7 @@ const EmployeeList = (props) => {
           );
         })}
       </div>
+      { open && <SnackBarComponent setOpen = {(e) => {setOpen(false)}} message={message} severity={severity}/> }
     </>
   );
 };

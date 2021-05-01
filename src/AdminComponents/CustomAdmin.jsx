@@ -13,7 +13,7 @@ import EmojiPeopleRoundedIcon from "@material-ui/icons/EmojiPeopleRounded";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import AppBar from "@material-ui/core/AppBar";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Fab from "@material-ui/core/Fab";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -26,6 +26,7 @@ import Form from "../FormComponents/Form";
 import SnackBarComponent from "../CommonComponents/SnackBarComponent";
 import ListComponent from "../ListComponent/ListComponent";
 import EmployeeList from "./EmployeeList";
+import SearchBar from "../CommonComponents/SearchBar";
 
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { PinDropSharp } from "@material-ui/icons";
@@ -63,6 +64,11 @@ const CustomAdmin = () => {
   const [data, setData] = useState([]);
   const [editForm, setEditForm] = useState(null);
   const [employeeID, setEmployeeId] = useState(null);
+  const [preserveEmployeeId, setPreserveEmployeeId] = useState(null);
+  const [preserveEmployeeName, setPreserveEmployeeName] = useState(null);
+  const [globalData, setGlobalData] = useState([]);
+  const [reRenderData, setReRenderData] = useState([]);
+  const [downloadData, setDownloadData] = useState([]);
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -81,7 +87,6 @@ const CustomAdmin = () => {
       history.push("/");
     }, 2000);
   };
-
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event &&
@@ -93,12 +98,14 @@ const CustomAdmin = () => {
 
     setState({ ...state, [anchor]: open });
   };
-
   const formClick = () => {
     if (tabName == "Form") {
       return;
     }
+    setReRenderData([]);
     setEmployeeId(null);
+    setPreserveEmployeeId(null);
+    setPreserveEmployeeName(null)
     setData([]);
     setTabName("Form");
     setEditForm(null);
@@ -106,8 +113,10 @@ const CustomAdmin = () => {
 
   const filterDataScreen = () => {
     if (tabName == "Filter Data") {
-      return
+      return;
     }
+    setPreserveEmployeeId(null);
+    setPreserveEmployeeName(null)
     setEmployeeId(null);
     setData([]);
     setTabName("Filter Data");
@@ -118,13 +127,18 @@ const CustomAdmin = () => {
     if (tabName === "My Recent") {
       return;
     }
+    setReRenderData([]);
+    setPreserveEmployeeId(null);
+    setPreserveEmployeeName(null)
     setEmployeeId(null);
-    setData([])
+    setData([]);
     setTabName("My Recent");
   };
 
   const employeeClick = () => {
     setEmployeeId(null);
+    setPreserveEmployeeId(null);
+    setPreserveEmployeeName(null)
     setData([]);
     setTabName("Employee");
     setEditForm(null);
@@ -152,6 +166,30 @@ const CustomAdmin = () => {
         filteredData.push(obj);
       });
     setData(filteredData);
+  };
+
+  const filterReRenderData = (data) => {
+    let filteredData = [];
+    if (data)
+      data.forEach((e) => {
+        // delete e['id']
+        let obj = {
+          id: e["id"],
+          "Consumer Name": e["consumerName"],
+          "Father Name": e["fatherName"],
+          Address: e["address"],
+          District: e["district"],
+          "Account Id": e["accountId"],
+          "Meter Id": e["meterId"],
+          "Meter Position": e["meterPosition"],
+          "Selling Book Number": e["sellingBookNo"],
+          "Selling Page Number": e["sellingPageNo"],
+          "Installation Date": e["installationDate"],
+          "Plastic Seal": e["plasticSeal"],
+        };
+        filteredData.push(obj);
+      });
+    setDownloadData(filteredData);
   };
 
   const list = (anchor) => (
@@ -211,28 +249,59 @@ const CustomAdmin = () => {
   return (
     <div>
       <AppBar position="sticky" style={{ background: "rgb(47 123 255)" }}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            onClick={toggleDrawer("left", true)}
-            aria-label="menu"
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "center",
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            {tabName}
-          </Typography>
-          { (window.innerWidth > 480 && data.length > 0 ) &&<Button color="inherit"  onClick={()=>{alert("In progress")}}> <FilterListIcon style={{margin:10}} /></Button>}
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              onClick={toggleDrawer("left", true)}
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title}>
+              {tabName}
+            </Typography>
+          </div>
           {data.length > 0 && (
-            <CSVLink data={data} target="_blank">
-              <GetAppIcon style={{ color: "#fff",margin:10 }} />
-            </CSVLink>
+            <SearchBar
+              data={globalData}
+              reRenderList={(data) => {
+                console.log(data, "returned data");
+                filterReRenderData(data);
+                setReRenderData(data);
+              }}
+            />
           )}
-          <Button color="inherit" style={{ marginLeft: 10 }} onClick={logOut}>
-            Logout
-          </Button>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "center",
+            }}
+          >
+            {/* { (window.innerWidth > 480 && data.length > 0 ) &&<Button color="inherit"  onClick={()=>{alert("In progress")}}> <FilterListIcon style={{margin:10}} /></Button>} */}
+            {data.length > 0 && reRenderData.length == 0 && (
+              <CSVLink data={data} target="_blank">
+                <GetAppIcon style={{ color: "#fff", margin: 10 }} />
+              </CSVLink>
+            )}
+            {data.length > 0 && reRenderData.length > 0 && (
+              <CSVLink data={downloadData} target="_blank">
+                <GetAppIcon style={{ color: "#fff", margin: 10 }} />
+              </CSVLink>
+            )}
+            <Button color="inherit" style={{ marginLeft: 10 }} onClick={logOut}>
+              Logout
+            </Button>
+          </div>
         </Toolbar>
       </AppBar>
       <React.Fragment key={"left"}>
@@ -246,16 +315,38 @@ const CustomAdmin = () => {
         </SwipeableDrawer>
       </React.Fragment>
       {tabName === "Form" && <Form />}
-      {tabName === "Edit Form" && <Form formData={editForm} />}
+      {tabName === "Edit Form" && (
+        <Form
+          formData={editForm}
+          callback={() => {
+            console.log(preserveEmployeeId)
+            if (preserveEmployeeId == null) {
+              setReRenderData([]);
+              setEmployeeId(null);
+              setData([]);
+              setTabName("My Recent");
+              return;
+            }
+            setEmployeeId(preserveEmployeeId);
+            setTabName(preserveEmployeeName);
+            setEditForm(null);
+            setReRenderData([]);
+          }}
+        />
+      )}
       {tabName === "My Recent" && (
         <ListComponent
           callback={(data) => {
+            setGlobalData(data);
             filterData(data);
           }}
+          reRenderData={reRenderData}
           loadForm={(e) => {
             setEditForm(e);
             setTabName("Edit Form");
             setEmployeeId(null);
+            setPreserveEmployeeId(null);
+            setPreserveEmployeeName(null)
             setData([]);
           }}
         />
@@ -264,8 +355,11 @@ const CustomAdmin = () => {
         <EmployeeList
           callback={(e) => {
             setEmployeeId(e._id);
+            setPreserveEmployeeId(e._id);
+            setPreserveEmployeeName(e.name)
             setTabName(e.name);
             setEditForm(null);
+            setReRenderData([]);
           }}
         />
       )}
@@ -274,8 +368,10 @@ const CustomAdmin = () => {
         <ListComponent
           _id={employeeID}
           callback={(data) => {
+            setGlobalData(data);
             filterData(data);
           }}
+          reRenderData={reRenderData}
           loadForm={(e) => {
             setEditForm(e);
             setTabName("Edit Form");
@@ -293,16 +389,18 @@ const CustomAdmin = () => {
           severity="success"
         />
       )}
-      { (window.innerWidth <= 480 && data.length > 0 ) && 
-       <Fab
-        color="secondary"
-        aria-label="add"
-        onClick={() =>{alert("In progress")}}
-        style={{ position: "fixed", bottom: 20, right: 20 }}
-      >
-        <FilterListIcon style={{ color: "#fff" }} />
-      </Fab>
-      }
+      {window.innerWidth <= 480 && data.length > 0 && (
+        <Fab
+          color="secondary"
+          aria-label="add"
+          onClick={() => {
+            alert("In progress");
+          }}
+          style={{ position: "fixed", bottom: 20, right: 20 }}
+        >
+          <FilterListIcon style={{ color: "#fff" }} />
+        </Fab>
+      )}
     </div>
   );
 };

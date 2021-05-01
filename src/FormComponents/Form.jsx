@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { fetchData } from "../MiddlewareComponents/RequestHandle.js";
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import "./form.css";
 import SnackBarComponent from "../CommonComponents/SnackBarComponent";
+import Button from "@material-ui/core/Button";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -52,10 +54,11 @@ const Form = (props) => {
       setInstallationDate(props.formData.installationDate);
       // setInstallationDate(props.formData.);
       setPlasticSeal(props.formData.plasticSeal);
-      setfileName("No file");
+      setfileName(props.formData.originalFileName ?? "No file");
       setFilePath("");
       setuser_id(props.formData._id);
       setEmployeeId(props.formData.userId);
+      console.log(props.formData," FORM DATA")
     }
   },[])
 
@@ -133,7 +136,7 @@ const Form = (props) => {
       installationDate,
       plasticSeal,
       employeeId,
-      originalFileName: filePath ? filePath.name : null,
+      originalFileName: filePath ? filePath.name : props.formData.originalFileName,
     };
     let result = validateData(payload)
     if (!result.status) {
@@ -162,6 +165,7 @@ const Form = (props) => {
         ...payload,
         fileName: data.filename,
       };
+      console.log(data.fileName)
       fetchData("/submitForm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -171,6 +175,7 @@ const Form = (props) => {
         setSeverity("success");
         setOpen(true)
         clearForm();
+        if (props.formData) {props.callback()}
       });
     });
   };
@@ -198,6 +203,7 @@ const Form = (props) => {
       <div className="backcontainer ">
         <div className="card-container">
           <div className="wrapper card">
+          {props.formData && <Button onClick={()=>{props.callback()}}><KeyboardBackspaceIcon /></Button>}
             {window.innerWidth >480 && <h2> Data Form </h2>}
             <form
               action="http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/upload"
@@ -344,6 +350,18 @@ const Form = (props) => {
                   value="submit"
                 />
               </div>
+              {props.formData && (
+                <div className="input-name" style={{marginTop:0}}>
+                <input
+                  className="button"
+                  type="button"
+                  onClick={() => {
+                    props.callback()
+                  }}
+                  value="Back"
+                />
+              </div>
+              )}
             </form>
           </div>
         </div>
