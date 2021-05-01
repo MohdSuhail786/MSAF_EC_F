@@ -35,7 +35,6 @@ import {
   getGridDateOperators,
   setGridPageStateUpdate,
 } from "@material-ui/data-grid";
-import FilterData from "./FilterData";
 
 const useStyles = makeStyles({
   list: {
@@ -66,6 +65,7 @@ const CustomAdmin = () => {
   const [employeeID, setEmployeeId] = useState(null);
   const [preserveEmployeeId, setPreserveEmployeeId] = useState(null);
   const [preserveEmployeeName, setPreserveEmployeeName] = useState(null);
+  const [preserveFilterFlag, setPreserveFilterFlag] = useState(false);
   const [globalData, setGlobalData] = useState([]);
   const [reRenderData, setReRenderData] = useState([]);
   const [downloadData, setDownloadData] = useState([]);
@@ -105,9 +105,10 @@ const CustomAdmin = () => {
     setReRenderData([]);
     setEmployeeId(null);
     setPreserveEmployeeId(null);
-    setPreserveEmployeeName(null)
+    setPreserveEmployeeName(null);
     setData([]);
     setTabName("Form");
+    setPreserveFilterFlag(false);
     setEditForm(null);
   };
 
@@ -116,9 +117,10 @@ const CustomAdmin = () => {
       return;
     }
     setPreserveEmployeeId(null);
-    setPreserveEmployeeName(null)
+    setPreserveEmployeeName(null);
     setEmployeeId(null);
     setData([]);
+    setPreserveFilterFlag(true);
     setTabName("Filter Data");
     setEditForm(null);
   };
@@ -129,17 +131,19 @@ const CustomAdmin = () => {
     }
     setReRenderData([]);
     setPreserveEmployeeId(null);
-    setPreserveEmployeeName(null)
+    setPreserveEmployeeName(null);
     setEmployeeId(null);
     setData([]);
+    setPreserveFilterFlag(false);
     setTabName("My Recent");
   };
 
   const employeeClick = () => {
     setEmployeeId(null);
     setPreserveEmployeeId(null);
-    setPreserveEmployeeName(null)
+    setPreserveEmployeeName(null);
     setData([]);
+    setPreserveFilterFlag(false);
     setTabName("Employee");
     setEditForm(null);
   };
@@ -319,17 +323,24 @@ const CustomAdmin = () => {
         <Form
           formData={editForm}
           callback={() => {
-            console.log(preserveEmployeeId)
+            console.log(preserveEmployeeId);
             if (preserveEmployeeId == null) {
               setReRenderData([]);
               setEmployeeId(null);
               setData([]);
+              if (preserveFilterFlag == true) {
+                filterDataScreen();
+                return;
+              }
               setTabName("My Recent");
               return;
             }
             setEmployeeId(preserveEmployeeId);
+
+            setPreserveFilterFlag(false);
             setTabName(preserveEmployeeName);
             setEditForm(null);
+
             setReRenderData([]);
           }}
         />
@@ -346,7 +357,8 @@ const CustomAdmin = () => {
             setTabName("Edit Form");
             setEmployeeId(null);
             setPreserveEmployeeId(null);
-            setPreserveEmployeeName(null)
+            setPreserveFilterFlag(false)
+            setPreserveEmployeeName(null);
             setData([]);
           }}
         />
@@ -356,14 +368,30 @@ const CustomAdmin = () => {
           callback={(e) => {
             setEmployeeId(e._id);
             setPreserveEmployeeId(e._id);
-            setPreserveEmployeeName(e.name)
+            setPreserveEmployeeName(e.name);
             setTabName(e.name);
             setEditForm(null);
             setReRenderData([]);
           }}
         />
       )}
-      {tabName === "Filter Data" && <FilterData />}
+      {tabName === "Filter Data" && (
+        <ListComponent
+          flag={true}
+          _id={employeeID}
+          callback={(data) => {
+            setGlobalData(data);
+            filterData(data);
+          }}
+          reRenderData={reRenderData}
+          loadForm={(e) => {
+            setEditForm(e);
+            setTabName("Edit Form");
+            setEmployeeId(null);
+            setData([]);
+          }}
+        />
+      )}
       {employeeID && (
         <ListComponent
           _id={employeeID}
@@ -374,6 +402,7 @@ const CustomAdmin = () => {
           reRenderData={reRenderData}
           loadForm={(e) => {
             setEditForm(e);
+            setPreserveFilterFlag(false)
             setTabName("Edit Form");
             setEmployeeId(null);
             setData([]);

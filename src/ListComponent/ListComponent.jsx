@@ -14,6 +14,19 @@ console.log(props.reRenderData," OUT SIDE")
   useEffect(() => {
     newRow = [] 
     let payload = null;
+
+    if (props.flag == true) {
+      fetchData("/getFilterData",{
+        method:"POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({})
+      }).then(data =>{
+        setRows(data)
+        props.callback(data)
+      })
+      return;
+    }
+
     if (props._id) {
       payload = {
         id: props._id,
