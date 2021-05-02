@@ -26,6 +26,7 @@ const Form = (props) => {
   const [consumerName, setConsumerName] = useState();
   const [fatherName, setFatherName] = useState();
   const [address, setAddress] = useState();
+  const [Subdivision, setSubdivision] = useState();
   const [accountId, setAccountId] = useState();
   const [meterId, setMeterId] = useState();
   const [district, setDistrict] = useState();
@@ -69,6 +70,7 @@ const Form = (props) => {
     setConsumerName("");
     setFatherName("");
     setAddress("");
+    setSubdivision("")
     setAccountId("");
     setMeterId("");
     setMeterPosition("");
@@ -88,8 +90,8 @@ const Form = (props) => {
       message : "",
       status : true
     }
-    if (!payload.meterId) {
-      result.message = "Please enter meter id"
+    if (payload.meterId === "") {
+      result.message = "Please enter meter NO."
       result.status = false
     }
     if (!payload.fatherName) {
@@ -111,6 +113,7 @@ const Form = (props) => {
       consumerName,
       fatherName,
       address,
+      Subdivision,
       accountId,
       meterId,
       district,
@@ -129,6 +132,7 @@ const Form = (props) => {
       consumerName,
       fatherName,
       address,
+      Subdivision,
       accountId,
       meterId,
       district,
@@ -248,6 +252,16 @@ const Form = (props) => {
                 />
               </div>
               <div className="input-name">
+                <i className="fa fa-address-card"></i>
+                <input
+                  type="text"
+                  placeholder="Subdivision"
+                  className="text-name"
+                  value={Subdivision}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+                </div>
+              <div className="input-name">
                 <i className="fa fa-user circle-o"></i>
                 <input
                   type="text"
@@ -261,12 +275,19 @@ const Form = (props) => {
                 <i className="fa fa-calculator"></i>
                 <input
                   type="text"
-                  placeholder="Meter Id"
+                  placeholder="Meter No."
                   className="text-name"
                   requiredz
                   value={meterId}
                   onChange={(e) => setMeterId(e.target.value)}
                 />
+                {/* <label style={{margin: 50}}
+                  type="button"
+                  htmlFor="fileUploaded"
+                  className="label-button"
+                >
+                  Choose photo
+                </label> */}
               </div>
               <div className="input-name">
                 <i className="fa fa-location-arrow"></i>
