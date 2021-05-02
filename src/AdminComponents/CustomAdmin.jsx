@@ -339,6 +339,7 @@ const CustomAdmin = () => {
         <Form
           formData={editForm}
           callback={() => {
+            setFab(false)
             console.log(preserveEmployeeId);
             if (preserveEmployeeId == null) {
               setReRenderData([]);
@@ -439,6 +440,8 @@ const CustomAdmin = () => {
           color="secondary"
           aria-label="add"
           onClick={() => {
+            setReRenderData(globalData)
+            filterReRenderData(globalData)
             if (fab)
             setFab(false)
             else 
@@ -448,6 +451,27 @@ const CustomAdmin = () => {
         >
           {!fab && <FilterListIcon style={{ color: "#fff" }} />}
           {fab && <ClearIcon style={{color:"#fff"}}/>}
+        </Fab>
+      )}
+      {window.innerWidth <= 480 && fab && data.length > 0 && (
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={() => {
+            
+          }}
+          style={{ position: "fixed", bottom: 90, right: 20 }}
+        >
+          {data.length > 0 && reRenderData.length == 0 && (
+              <CSVLink data={data} target="_blank">
+                <GetAppIcon style={{ color: "#fff", margin: 10 }} />
+              </CSVLink>
+            )}
+            {data.length > 0 && reRenderData.length > 0 && (
+              <CSVLink data={downloadData} target="_blank">
+                <GetAppIcon style={{ color: "#fff", margin: 10 }} />
+              </CSVLink>
+            )}
         </Fab>
       )}
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
@@ -22,6 +22,7 @@ import { useHistory } from "react-router-dom";
 import Form from "./Form";
 import SnackBarComponent from "../CommonComponents/SnackBarComponent";
 import ListComponent from "../ListComponent/ListComponent";
+import ClearIcon from '@material-ui/icons/Clear';
 import SearchBar from "../CommonComponents/SearchBar";
 
 const useStyles = makeStyles({
@@ -52,12 +53,20 @@ export default function CustomForm(props) {
   const [data, setData] = useState([]);
   const [reRenderData, setReRenderData] = useState([]);
   const [downloadData, setDownloadData] = useState([]);
+  const [fab, setFab] = useState(false);
   const [state, setState] = useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
+
+  useEffect(()=>{
+    if (window.innerWidth <=480) {
+      setFab(false);
+    }
+    else setFab(true)
+  },[])
 
   const logOut = () => {
     localStorage.removeItem("accessToken");
@@ -216,7 +225,7 @@ export default function CustomForm(props) {
             {tabName}
           </Typography>
           </div>
-          { data.length>0 &&
+          {/* { data.length>0 &&
             <SearchBar
               data={globalData}
               reRenderList={(data) => {
@@ -225,7 +234,30 @@ export default function CustomForm(props) {
                 setReRenderData(data);
               }}
             />
-          }
+          } */}
+          {(window.innerWidth >480 && data.length > 0) && (
+            <SearchBar
+              data={globalData}
+              reRenderList={(data) => {
+                console.log(data, "returned data");
+                filterReRenderData(data);
+                setReRenderData(data);
+              }}
+            />
+          )}
+          {(window.innerWidth <=480 && fab && data.length > 0) && (
+            
+            <SearchBar
+              style={{position:"fixed",width:"100%",margin:0,top:0,left:0,zIndex:100}}
+              data={globalData}
+              reRenderList={(data) => {
+                console.log(data, "returned data");
+                filterReRenderData(data);
+                setReRenderData(data);
+              }}
+            />
+            
+          )}
           <div
             style={{
               display: "flex",
@@ -272,6 +304,7 @@ export default function CustomForm(props) {
         <Form
           formData={editForm}
           callback={() => {
+              setFab(false)
               setReRenderData([]);
               setData([]);
               setTabName("Recent");           
@@ -292,13 +325,20 @@ export default function CustomForm(props) {
           color="secondary"
           aria-label="add"
           onClick={() => {
-            alert("In progress");
+            setReRenderData(globalData)
+            filterReRenderData(globalData)
+            if (fab)
+            setFab(false)
+            else 
+            setFab(true)
           }}
           style={{ position: "fixed", bottom: 20, right: 20 }}
         >
-          <FilterListIcon style={{ color: "#fff" }} />
+          {!fab && <FilterListIcon style={{ color: "#fff" }} />}
+          {fab && <ClearIcon style={{color:"#fff"}}/>}
         </Fab>
       )}
+      
     </div>
   );
 }
