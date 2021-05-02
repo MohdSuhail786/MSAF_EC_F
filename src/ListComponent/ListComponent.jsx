@@ -8,6 +8,7 @@ import CircularProgressBar from "../MiddlewareComponents/CircularProgressBar";
 
 const ListComponent = (props) => {
   const [rows, setRows] = useState([]);
+  const [noData, setNoData] = useState(false);
 
   console.log(props.reRenderData, " OUT SIDE");
   let newRow = props.reRenderData;
@@ -27,6 +28,12 @@ const ListComponent = (props) => {
         setRows(data);
         setProgressBar(false);
         props.callback(data);
+        if (data.length == 0) {
+          setNoData(true)
+        }
+        else {
+          setNoData(false)
+        }
       });
       return;
     }
@@ -49,6 +56,12 @@ const ListComponent = (props) => {
       console.log(data);
       setRows(data);
       setProgressBar(false);
+      if (data.length == 0) {
+        setNoData(true)
+      }
+      else {
+        setNoData(false)
+      }
       props.callback(data);
     });
   }, []);
@@ -67,6 +80,13 @@ const ListComponent = (props) => {
         <CircularProgressBar />
       </div>
     );
+  }
+  if (noData) {
+    return (
+      <div style={{height:"90vh",display:"flex",color:"#000",justifyContent:"center",alignContent:"center",alignItems:"center"}}>
+       No data to show
+      </div>
+    )
   }
 
   return (

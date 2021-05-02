@@ -31,6 +31,7 @@ const EmployeeList = (props) => {
   const [severity, setSeverity] = useState();
   const [progressBar, setProgressBar] = useState(false);
   const [progressBarD, setProgressBarD] = useState(false);
+  const [noData, setNoData] = useState(false);
   const inputEl = useRef(null);
 
   useEffect(() => {
@@ -40,6 +41,10 @@ const EmployeeList = (props) => {
     };
     fetchData("/getEmployees", requestOptions).then((data) => {
       setEmployees(data.employees);
+      if (data.employees.length == 0) {
+        setNoData(true)
+      }
+      else setNoData(false)
       setProgressBar(false);
     });
   }, [open]);
@@ -80,6 +85,23 @@ const EmployeeList = (props) => {
         }}
       >
         <CircularProgressBar />
+      </div>
+    );
+  }
+  
+  if (noData) {
+    return (
+      <div
+        style={{
+          height: "90vh",
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+          color:"#000",
+          alignItems: "center",
+        }}
+      >
+        No data to show
       </div>
     );
   }
