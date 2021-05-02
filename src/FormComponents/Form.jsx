@@ -210,9 +210,9 @@ const Form = (props) => {
   return (
     <>
       {/* <div className="background-color"></div> */}
-      <div className="backcontainer ">
+      <div className="backcontainer " >
         <div className="card-container">
-          <div className="wrapper card">
+          <div className="wrapper card" style={{marginBottom:100}}>
           {props.formData && <Button onClick={()=>{props.callback()}}><KeyboardBackspaceIcon /></Button>}
             {window.innerWidth >480 && <h2> Data Form </h2>}
             <form
