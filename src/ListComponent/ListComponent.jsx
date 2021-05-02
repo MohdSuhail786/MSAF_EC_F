@@ -4,11 +4,17 @@ import Paper from "@material-ui/core/Paper";
 import { Button } from "@material-ui/core";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import Divider from "@material-ui/core/Divider";
+import DeleteIcon from '@material-ui/icons/Delete';
+import SnackBarComponent from "../CommonComponents/SnackBarComponent";
 import CircularProgressBar from "../MiddlewareComponents/CircularProgressBar";
 
 const ListComponent = (props) => {
   const [rows, setRows] = useState([]);
   const [noData, setNoData] = useState(false);
+  const [message, setMessage] = useState();
+  const [severity, setSeverity] = useState();
+  const [open, setOpen] = useState();
+  const [openPh, setOpenPh] = useState();
 
   console.log(props.reRenderData, " OUT SIDE");
   let newRow = props.reRenderData;
@@ -64,14 +70,38 @@ const ListComponent = (props) => {
       }
       props.callback(data);
     });
-  }, []);
+  }, [open]);
 
   const downloadPhoto = (path,originalFileName) => {
     console.log(path.slice(8))
     if (path && path!='NULL' && path != 'null' )
     window.open(`http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/download/${path.slice(8)}/${originalFileName}`);
-    else 
-    alert("Photo not available")
+    else {
+      setSeverity("warning")
+      setMessage("Photo not available")
+      setOpenPh(true)
+    }
+  }
+
+  const deleteForm = (formId) => {
+    setProgressBar(true)
+    fetchData('/deleteForm',{
+      method:"POST",
+      headers:{"Content-Type": "application/json"},
+      body: JSON.stringify({_id:formId})
+    }).then(data => {
+      setProgressBar(false)
+      if (data.message) {
+        setSeverity("success")
+        setMessage(data.message)
+        setOpen(true)
+      }
+      if (data.error) {
+        setSeverity("error")
+        setMessage(data.error)
+        setOpen(true)
+      }
+    })
   }
 
   if (progressBar) {
@@ -115,7 +145,9 @@ const ListComponent = (props) => {
                   // padding: 10,
                 }}
               >
+                
                 <div style={{ minHeight: 220, textAlign: "start" }}>
+                
                   <div
                     style={{
                       minHeight: 30,
@@ -127,7 +159,8 @@ const ListComponent = (props) => {
                   >
                     Meter Id : {e.meterId ?? "NULL"}
                   </div>
-                  <div style={{ padding: 20, maxHeight: 190, maxWidth: 250 }}>
+                  <div style={{display:"flex",justifyContent:"center",flexDirection:"column", padding: 20, maxHeight: 190,  }}>
+                  <div style={{height:20,width:"100%",display:"flex",justifyContent:"flex-end",alignItems:"center",marginTop:10,float:"left"}} onClick={()=>{deleteForm(e._id)}}><DeleteIcon style={{color:"#000"}}/></div>
                     {<b>Consumer Name : </b>}
                     {e.consumerName ?? "NULL"} <br></br>
                     <Divider />
@@ -192,6 +225,8 @@ const ListComponent = (props) => {
                 }}
               >
                 <div style={{ minHeight: 220, textAlign: "start" }}>
+              
+
                   <div
                     style={{
                       minHeight: 30,
@@ -203,7 +238,8 @@ const ListComponent = (props) => {
                   >
                     Meter Id : {e.meterId ?? "NULL"}
                   </div>
-                  <div style={{ padding: 20, maxHeight: 190, maxWidth: 250 }}>
+                  <div style={{display:"flex",justifyContent:"center",flexDirection:"column", padding: 20, maxHeight: 190,  }}>
+                  <div style={{height:20,width:"100%",display:"flex",justifyContent:"flex-end",alignItems:"center",marginTop:10,float:"left"}} onClick={()=>{deleteForm(e._id)}}><DeleteIcon style={{color:"#000"}}/></div>
                     {<b>Consumer Name : </b>}
                     {e.consumerName ?? "NULL"} <br></br>
                     <Divider />
@@ -220,6 +256,7 @@ const ListComponent = (props) => {
                     <br></br>
                     <Divider />
                   </div>
+                  
                 </div>
                 <div
                   style={{
@@ -252,6 +289,7 @@ const ListComponent = (props) => {
             );
           })}
       </div>
+      { (open || openPh) && <SnackBarComponent setOpen = {(e) => {setOpen(false)}} message={message} severity={severity}/> }
     </>
   );
 };
