@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
@@ -26,6 +26,7 @@ import SnackBarComponent from "../CommonComponents/SnackBarComponent";
 import ListComponent from "../ListComponent/ListComponent";
 import EmployeeList from "./EmployeeList";
 import SearchBar from "../CommonComponents/SearchBar";
+import ClearIcon from '@material-ui/icons/Clear';
 import GetAppIcon from "@material-ui/icons/GetApp";
 
 const useStyles = makeStyles({
@@ -60,6 +61,7 @@ const CustomAdmin = () => {
   const [preserveFilterFlag, setPreserveFilterFlag] = useState(false);
   const [globalData, setGlobalData] = useState([]);
   const [reRenderData, setReRenderData] = useState([]);
+  const [fab, setFab] = useState(false);
   const [downloadData, setDownloadData] = useState([]);
   const [state, setState] = useState({
     top: false,
@@ -67,6 +69,13 @@ const CustomAdmin = () => {
     bottom: false,
     right: false,
   });
+
+  useEffect(()=>{
+    if (window.innerWidth <=480) {
+      setFab(false);
+    }
+    else setFab(true)
+  },[])
 
   const logOut = () => {
     localStorage.removeItem("accessToken");
@@ -151,6 +160,7 @@ const CustomAdmin = () => {
           "Father Name": e["fatherName"],
           Address: e["address"],
           District: e["district"],
+          "Subdivision": e['subdivision'],
           "Account Id": e["accountId"],
           "Meter Id": e["meterId"],
           "Meter Position": e["meterPosition"],
@@ -175,6 +185,7 @@ const CustomAdmin = () => {
           "Father Name": e["fatherName"],
           Address: e["address"],
           District: e["district"],
+          "Subdivision": e['subdivision'],
           "Account Id": e["accountId"],
           "Meter Id": e["meterId"],
           "Meter Position": e["meterPosition"],
@@ -266,7 +277,7 @@ const CustomAdmin = () => {
               {tabName}
             </Typography>
           </div>
-          {data.length > 0 && (
+          {(window.innerWidth >480 && data.length > 0) && (
             <SearchBar
               data={globalData}
               reRenderList={(data) => {
@@ -275,6 +286,19 @@ const CustomAdmin = () => {
                 setReRenderData(data);
               }}
             />
+          )}
+          {(window.innerWidth <=480 && fab && data.length > 0) && (
+            
+            <SearchBar
+              style={{position:"fixed",width:"100%",margin:0,top:0,left:0,zIndex:100}}
+              data={globalData}
+              reRenderList={(data) => {
+                console.log(data, "returned data");
+                filterReRenderData(data);
+                setReRenderData(data);
+              }}
+            />
+            
           )}
           <div
             style={{
@@ -415,11 +439,15 @@ const CustomAdmin = () => {
           color="secondary"
           aria-label="add"
           onClick={() => {
-            alert("In progress");
+            if (fab)
+            setFab(false)
+            else 
+            setFab(true)
           }}
           style={{ position: "fixed", bottom: 20, right: 20 }}
         >
-          <FilterListIcon style={{ color: "#fff" }} />
+          {!fab && <FilterListIcon style={{ color: "#fff" }} />}
+          {fab && <ClearIcon style={{color:"#fff"}}/>}
         </Fab>
       )}
     </div>

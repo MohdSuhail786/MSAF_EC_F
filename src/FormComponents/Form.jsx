@@ -26,7 +26,7 @@ const Form = (props) => {
   const [consumerName, setConsumerName] = useState();
   const [fatherName, setFatherName] = useState();
   const [address, setAddress] = useState();
-  const [Subdivision, setSubdivision] = useState();
+  const [subdivision, setSubdivision] = useState();
   const [accountId, setAccountId] = useState();
   const [meterId, setMeterId] = useState();
   const [district, setDistrict] = useState();
@@ -53,6 +53,7 @@ const Form = (props) => {
       setMeterPosition(props.formData.meterPosition);
       setDistrict(props.formData.district);
       setSellingPageNo(props.formData.sellingPageNo);
+      setSubdivision(props.formData.subdivision)
       setSellingBookNo(props.formData.sellingBookNo);
       setInstallationDate(props.formData.installationDate);
       // setInstallationDate(props.formData.);
@@ -90,16 +91,16 @@ const Form = (props) => {
       message : "",
       status : true
     }
-    if (payload.meterId === "") {
-      result.message = "Please enter meter NO."
+    if (!payload.meterId) {
+      result.message = "Please enter Meter No."
       result.status = false
     }
-    if (!payload.fatherName) {
-      result.message = "Please enter father's name"
+    if (!payload.accountId) {
+      result.message = "Please enter Account Id"
       result.status = false
     }
     if (!payload.consumerName) {
-      result.message = "Please enter consumer name"
+      result.message = "Please enter Consumer name"
       result.status = false
     }
     
@@ -113,7 +114,7 @@ const Form = (props) => {
       consumerName,
       fatherName,
       address,
-      Subdivision,
+      subdivision,
       accountId,
       meterId,
       district,
@@ -132,7 +133,7 @@ const Form = (props) => {
       consumerName,
       fatherName,
       address,
-      Subdivision,
+      subdivision,
       accountId,
       meterId,
       district,
@@ -257,8 +258,8 @@ const Form = (props) => {
                   type="text"
                   placeholder="Subdivision"
                   className="text-name"
-                  value={Subdivision}
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={subdivision}
+                  onChange={(e) => setSubdivision(e.target.value)}
                 />
                 </div>
               <div className="input-name">

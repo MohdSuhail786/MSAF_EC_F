@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchBar(props) {
   const classes = useStyles();
   const [searchData,setSearchData] = useState([])
+  const [style,setStyle] = useState(props.style)
   const flatData = () => {
     let result = []
     props.data.forEach(e => {
@@ -34,6 +35,7 @@ export default function SearchBar(props) {
 
   useEffect(()=>{
     flatData();
+    setStyle({background:"#fff",margin:10,...style})
     console.log(searchData)
   },[])
 
@@ -64,13 +66,14 @@ export default function SearchBar(props) {
    props.reRenderList(result);
   }
 
-
+// props.style = {background:"#fff",margin:10,...props.style,}
 console.log(props.data,"THIS IS SEARCH BAR DATA")
   return (
     <div className={classes.root} style={{transitionDuration:3}}>
       <Autocomplete
         multiple
-        style={{background:"#fff",margin:10}}
+        style={style}
+        // style={props.style}
         limitTags={2}
         id="multiple-limit-tags"
         options={searchData}
