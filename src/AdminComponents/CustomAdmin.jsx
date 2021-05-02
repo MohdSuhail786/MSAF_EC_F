@@ -463,12 +463,12 @@ const CustomAdmin = () => {
           style={{ position: "fixed", bottom: 90, right: 20 }}
         >
           {data.length > 0 && reRenderData.length == 0 && (
-              <CSVLink data={data} target="_blank">
+              <CSVLink filename={new Date()+  ".csv"} data={data} target="_blank">
                 <GetAppIcon style={{ color: "#fff", margin: 10 }} />
               </CSVLink>
             )}
             {data.length > 0 && reRenderData.length > 0 && (
-              <CSVLink data={downloadData} target="_blank">
+              <CSVLink filename={new Date()+  ".csv"} data={downloadData} target="_blank">
                 <GetAppIcon style={{ color: "#fff", margin: 10 }} />
               </CSVLink>
             )}
