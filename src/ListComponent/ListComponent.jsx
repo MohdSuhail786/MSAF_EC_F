@@ -53,10 +53,10 @@ const ListComponent = (props) => {
     });
   }, []);
 
-  const downloadPhoto = (path) => {
+  const downloadPhoto = (path,originalFileName) => {
     console.log(path.slice(8))
     if (path && path!='NULL' && path != 'null' )
-    window.open(`http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/download/${path.slice(8)}`);
+    window.open(`http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/download/${path.slice(8)}/${originalFileName}`);
     else 
     alert("Photo not available")
   }
@@ -135,7 +135,7 @@ const ListComponent = (props) => {
                 >
                   <Button
                     variant="contained"
-                    onClick={()=>{ downloadPhoto(e.fileName)}}
+                    onClick={()=>{ downloadPhoto(e.fileName,e.originalFileName)}}
                     style={{ background: "#4481eb", color: "#fff" }}
                   >
                     Photo
@@ -211,7 +211,7 @@ const ListComponent = (props) => {
                 >
                   <Button
                     variant="contained"
-                    onClick={()=>{ downloadPhoto(e.fileName)}}
+                    onClick={()=>{ downloadPhoto(e.fileName,e.originalFileName)}}
                     style={{ background: "#4481eb", color: "#fff" }}
                   >
                     Photo
