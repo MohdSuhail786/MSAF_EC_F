@@ -309,12 +309,12 @@ const CustomAdmin = () => {
           >
             {/* { (window.innerWidth > 480 && data.length > 0 ) &&<Button color="inherit"  onClick={()=>{alert("In progress")}}> <FilterListIcon style={{margin:10}} /></Button>} */}
             {data.length > 0 && reRenderData.length == 0 && (
-              <CSVLink filename="Data.xls" data={data} target="_blank">
+              <CSVLink filename={Date().toLocaleLowerCase + ".csv"} data={data} target="_blank">
                 <GetAppIcon style={{ color: "#fff", margin: 10 }} />
               </CSVLink>
             )}
             {data.length > 0 && reRenderData.length > 0 && (
-              <CSVLink filename="Data.xls" data={downloadData} target="_blank">
+              <CSVLink filename={Date().toLocaleLowerCase + ".csv"} data={downloadData} target="_blank">
                 <GetAppIcon style={{ color: "#fff", margin: 10 }} />
               </CSVLink>
             )}
