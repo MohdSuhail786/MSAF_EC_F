@@ -53,6 +53,14 @@ const ListComponent = (props) => {
     });
   }, []);
 
+  const downloadPhoto = (path) => {
+    console.log(path.slice(8))
+    if (path && path!='NULL' && path != 'null' )
+    window.open(`http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/download/${path.slice(8)}`);
+    else 
+    alert("Photo not available")
+  }
+
   if (progressBar) {
     return (
       <div style={{height:"90vh",display:"flex",justifyContent:"center",alignContent:"center",alignItems:"center"}}>
@@ -127,7 +135,7 @@ const ListComponent = (props) => {
                 >
                   <Button
                     variant="contained"
-                    onClick={()=>{alert("In Progress..")}}
+                    onClick={()=>{ downloadPhoto(e.fileName)}}
                     style={{ background: "#4481eb", color: "#fff" }}
                   >
                     Photo
@@ -203,7 +211,7 @@ const ListComponent = (props) => {
                 >
                   <Button
                     variant="contained"
-                    onClick={() => {alert("In Progress")}}
+                    onClick={()=>{ downloadPhoto(e.fileName)}}
                     style={{ background: "#4481eb", color: "#fff" }}
                   >
                     Photo
