@@ -39,6 +39,17 @@ export default function SearchBar(props) {
     console.log(searchData)
   },[])
 
+  const find = (arr,element)=> {
+    let res = false;
+    arr.forEach(e=>{
+      console.log(e._id,element,"SUHAIL",e._id.toString() == element.toString())
+      if (e._id.toString() == element.toString()) {
+        res = true;
+      }
+    })
+    return res;
+  }
+
   const filterData = (value) => {
     if (!value) return;
     let result = []
@@ -46,17 +57,17 @@ export default function SearchBar(props) {
    props.data.forEach(e => {
      value.forEach(v => {
       if (v.title[0] == "N" && e.consumerName) {
-        if (v.title.slice(5).trim() == e.consumerName.trim()) {
+        if (v.title.slice(5).trim() == e.consumerName.trim() && !find(result,e._id)) {
           result.push(e);
         }
       }
       else if (v.title[0]=="M" && e.meterId) {
-        if (v.title.slice(9).trim() == e.meterId.trim()) {
+        if (v.title.slice(9).trim() == e.meterId.trim() && !find(result,e._id)) {
           result.push(e);
         }
       }
       else if (v.title[0] == "A" && e.accountId){
-        if (v.title.slice(11).trim() == e.accountId.trim()) {
+        if (v.title.slice(11).trim() == e.accountId.trim() && !find(result,e._id)) {
           result.push(e);
         }
       }
