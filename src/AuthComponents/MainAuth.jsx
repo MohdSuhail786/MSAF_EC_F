@@ -14,6 +14,8 @@ const MainAuth = (props) => {
     
     return (
         <div className={value}>
+             <marquee style={{float:"right"}} width = "50%">Login Credentials for admin = Email: admin@gmail.com Password: admin </marquee> <br></br>
+             <marquee style={{float:"right"}} width = "50%">Login Credentials for user = Email: user@gmail.com Password: test </marquee>
             <div className="forms-container">
                 <div className="signin-signup">
                     <Login callback={()=>props.callback()} setOpen = {(e)=>{setOpen(e)}} setMessage={(e) => {setMessage(e); console.log(e)}} setSeverity = {(e) => setSeverity(e)}/>
