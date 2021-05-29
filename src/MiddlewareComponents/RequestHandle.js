@@ -31,7 +31,7 @@ export async function fetchData(path,requestOptions) {
                     console.log("access token refreshed by using refreshtoken",data)
                     localStorage.accessToken  = data.accessToken
                     localStorage.refreshToken = data.refreshToken
-                    response = this.fetchData(path,requestOptions,payload)
+                    response = fetchData(path,requestOptions,payload)
                 }
                 else {
                     console.log("Refresh token is also expired")

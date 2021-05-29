@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import CircularProgressBar from "../MiddlewareComponents/CircularProgressBar";
 
 const Register = (props) => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [progressBar,setProgressBar] = useState(false)
 
   const registerBtn = () => {
+    setProgressBar(true)
     let payload = {
       name: name,
       email: email,
@@ -21,6 +24,7 @@ const Register = (props) => {
     fetch("http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/register", requestOptions)
       .then((res) => res.json())
       .then((data) => {
+        setProgressBar(false)
         if (data.error !== undefined) {
           props.setMessage(data.error);
           props.setSeverity("error")
@@ -82,6 +86,7 @@ const Register = (props) => {
           className="btn"
           value="Sign up"
         />
+        {progressBar && <CircularProgressBar />}
       </form>
     </>
   );

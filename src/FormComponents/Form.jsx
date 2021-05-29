@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { fetchData } from "../MiddlewareComponents/RequestHandle.js";
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import "./form.css";
 import SnackBarComponent from "../CommonComponents/SnackBarComponent";
+import Button from "@material-ui/core/Button";
+import CircularProgressBar from "../MiddlewareComponents/CircularProgressBar.jsx";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -16,13 +19,14 @@ import SnackBarComponent from "../CommonComponents/SnackBarComponent";
 //   },
 // }));
 
-const Form = () => {
+const Form = (props) => {
   let history = useHistory();
 
   const [fileName, setfileName] = useState("No file");
   const [consumerName, setConsumerName] = useState();
   const [fatherName, setFatherName] = useState();
   const [address, setAddress] = useState();
+  const [subdivision, setSubdivision] = useState();
   const [accountId, setAccountId] = useState();
   const [meterId, setMeterId] = useState();
   const [district, setDistrict] = useState();
@@ -35,11 +39,39 @@ const Form = () => {
   const [message, setMessage] = useState();
   const [severity, setSeverity] = useState();
   const [open, setOpen] = useState();
+  const [user_id, setuser_id] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
+  const [progressBar,setProgressBar] = useState(false)
+
+  useEffect(()=>{
+    if (props.formData) {
+      setConsumerName(props.formData.consumerName);
+      setFatherName(props.formData.fatherName);
+      setAddress(props.formData.address);
+      setAccountId(props.formData.accountId);
+      setMeterId(props.formData.meterId);
+      setMeterPosition(props.formData.meterPosition);
+      setDistrict(props.formData.district);
+      setSellingPageNo(props.formData.sellingPageNo);
+      setSubdivision(props.formData.subdivision)
+      setSellingBookNo(props.formData.sellingBookNo);
+      setInstallationDate(props.formData.installationDate);
+      // setInstallationDate(props.formData.);
+      setPlasticSeal(props.formData.plasticSeal);
+      setfileName(props.formData.originalFileName ?? "No file");
+      setFilePath("");
+      setuser_id(props.formData._id);
+      setEmployeeId(props.formData.userId);
+      console.log(props.formData," FORM DATA")
+    }
+  },[])
 
   const clearForm = () => {
+    setuser_id("")
     setConsumerName("");
     setFatherName("");
     setAddress("");
+    setSubdivision("")
     setAccountId("");
     setMeterId("");
     setMeterPosition("");
@@ -51,6 +83,7 @@ const Form = () => {
     setPlasticSeal("");
     setfileName("No file");
     setFilePath("");
+    setEmployeeId("");
   };
 
   const validateData = (payload)=> {
@@ -58,28 +91,30 @@ const Form = () => {
       message : "",
       status : true
     }
-    if (payload.meterId === "") {
-      result.message = "Please enter meter id"
+    if (!payload.meterId) {
+      result.message = "Please enter Meter No."
       result.status = false
     }
-    if (payload.fatherName === "") {
-      result.message = "Please enter father's name"
+    if (!payload.accountId) {
+      result.message = "Please enter Account Id"
       result.status = false
     }
-    if (payload.consumerName === "") {
-      result.message = "Please enter consumer name"
+    if (!payload.consumerName) {
+      result.message = "Please enter Consumer name"
       result.status = false
     }
-    
     
     return result;
   }
 
   const submitForm = () => {
+    setProgressBar(true)
     console.log(
+      user_id,
       consumerName,
       fatherName,
       address,
+      subdivision,
       accountId,
       meterId,
       district,
@@ -94,9 +129,11 @@ const Form = () => {
     data.append("fileUploaded", filePath);
     console.log(data);
     let payload = {
+      user_id,  
       consumerName,
       fatherName,
       address,
+      subdivision,
       accountId,
       meterId,
       district,
@@ -105,13 +142,15 @@ const Form = () => {
       sellingPageNo,
       installationDate,
       plasticSeal,
-      originalFileName: filePath ? filePath.name : null,
+      employeeId,
+      originalFileName: filePath ? filePath.name : (props.formData) ? props.formData.originalFileName : null,
     };
     let result = validateData(payload)
     if (!result.status) {
       setSeverity("warning");
       setMessage(result.message);
       setOpen(true)
+      setProgressBar(false)
       return;
     }
 
@@ -121,12 +160,13 @@ const Form = () => {
       body: data,
     };
     fetchData("/upload", requestOptions).then((data) => {
-
+      
       if (data == null) {
         setSeverity("error");
         setMessage("Unable to submit the form. Please login again.");
         setOpen(true)
         setTimeout(() => {
+          setProgressBar(false)
           return history.push("/");
         }, 2000);
       }
@@ -134,15 +174,18 @@ const Form = () => {
         ...payload,
         fileName: data.filename,
       };
+      console.log(data.fileName)
       fetchData("/submitForm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       }).then((data) => {
+        setProgressBar(false)
         setMessage(data.message);
         setSeverity("success");
         setOpen(true)
         clearForm();
+        if (props.formData) {props.callback()}
       });
     });
   };
@@ -166,10 +209,10 @@ const Form = () => {
 
   return (
     <>
-      <div className="background-color"></div>
-      <div className="backcontainer ">
+      <div className="backcontainer " >
         <div className="card-container">
-          <div className="wrapper card">
+          <div className="wrapper card" style={{marginBottom:100}}>
+          {props.formData && <Button onClick={()=>{props.callback()}}><KeyboardBackspaceIcon /></Button>}
             {window.innerWidth >480 && <h2> Data Form </h2>}
             <form
               action="http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/upload"
@@ -209,6 +252,16 @@ const Form = () => {
                 />
               </div>
               <div className="input-name">
+                <i className="fa fa-address-card"></i>
+                <input
+                  type="text"
+                  placeholder="Subdivision"
+                  className="text-name"
+                  value={subdivision}
+                  onChange={(e) => setSubdivision(e.target.value)}
+                />
+                </div>
+              <div className="input-name">
                 <i className="fa fa-user circle-o"></i>
                 <input
                   type="text"
@@ -222,12 +275,19 @@ const Form = () => {
                 <i className="fa fa-calculator"></i>
                 <input
                   type="text"
-                  placeholder="Meter Id"
+                  placeholder="Meter No."
                   className="text-name"
                   requiredz
                   value={meterId}
                   onChange={(e) => setMeterId(e.target.value)}
                 />
+                {/* <label style={{margin: 50}}
+                  type="button"
+                  htmlFor="fileUploaded"
+                  className="label-button"
+                >
+                  Choose photo
+                </label> */}
               </div>
               <div className="input-name">
                 <i className="fa fa-location-arrow"></i>
@@ -308,19 +368,35 @@ const Form = () => {
                 {/* <button type="button" id="custom-button" onClick={customButtonClick}>Choose photo</button> */}
                 <span id="custom-text">{fileName} </span>
               </div>
-              <div className="input-name">
+              <div className="input-name" style={{display:"flex",justifyContent:"space-evenly"}}>
                 <input
                   className="button"
                   type="button"
+                  style={{marginBottom:0}}
                   onClick={submitForm}
                   value="submit"
                 />
+                {/* {progressBar && <CircularProgressBar style={{marginLeft:15}}/>} */}
               </div>
+              {props.formData && (
+                <div className="input-name" style={{marginTop:0}}>
+                <input
+                  className="button"
+                  type="button"
+                  
+                  onClick={() => {
+                    props.callback()
+                  }}
+                  value="Back"
+                />
+              </div>
+              )}
             </form>
           </div>
         </div>
       </div>
       { open && <SnackBarComponent setOpen = {(e) => {setOpen(false)}} message={message} severity={severity}/> }
+      {progressBar && <div style={{position:"fixed", top:50,left:0,height:"100%",width:"100%",backgroundColor:"rgb(123 123 123 / 69%)"}}><CircularProgressBar style={{justifyContent:"center",height:"100%",alignItems:"center"}}/></div> }
     </>
   );
 };

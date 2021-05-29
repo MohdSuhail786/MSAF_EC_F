@@ -6,7 +6,7 @@ const MainForm = () => {
     
     return (
         <>
-        { window.innerWidth > 480 && <Form />}
+        { window.innerWidth > 480 && <CustomForm />}
         { window.innerWidth <= 480 && <CustomForm />}
         </>
     )
