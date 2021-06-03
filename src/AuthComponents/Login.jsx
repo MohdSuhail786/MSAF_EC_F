@@ -60,13 +60,13 @@ const Login = (props) => {
 
     return (
           <form id="login-form" className="sign-in-form">
-            <div style={{marginBottom:50}}>
-            <marquee >
-          Login Credentials for admin = Email: "admin@gmail.com" Password: "admin"
-          
-          Login Credentials for user = Email: "user@gmail.com" Password: "test"
-        </marquee>
-        </div>
+   //         <div style={{marginBottom:50}}>
+//            <marquee >
+//          Login Credentials for admin = Email: "admin@gmail.com" Password: "admin"
+//          
+//          Login Credentials for user = Email: "user@gmail.com" Password: "test"
+//        </marquee>
+ //       </div>
             <h2 className="title">Sign in</h2>
             <div className="input-field">
               <i className="fas fa-user"></i>
