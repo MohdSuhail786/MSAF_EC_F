@@ -215,7 +215,7 @@ const Form = (props) => {
           {props.formData && <Button onClick={()=>{props.callback()}}><KeyboardBackspaceIcon /></Button>}
             {window.innerWidth >480 && <h2> Data Form </h2>}
             <form
-              action="http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/upload"
+              action="https://www.msafofficial.tk/upload"
               method="post"
               encType="multipart/form-data"
             >

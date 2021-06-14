@@ -24,7 +24,7 @@ const Login = (props) => {
       body: JSON.stringify(payload)
     }
 
-    fetch("http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/login",requestOptions)
+    fetch("https://www.msafofficial.tk/login",requestOptions)
       .then(res => res.json())
       .then(data => {
         setProgressBar(false);

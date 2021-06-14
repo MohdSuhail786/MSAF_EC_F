@@ -74,7 +74,7 @@ const ListComponent = (props) => {
     console.log(path.slice(8));
     if (path && path != "NULL" && path != "null")
       window.open(
-        `http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/download/${path.slice(
+        `https://www.msafofficial.tk/download/${path.slice(
           8
         )}/${originalFileName}`
       );

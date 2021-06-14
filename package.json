@@ -33,7 +33,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/",
+  "proxy": "https://www.msafofficial.tk/",
   "secure": false,
   "eslintConfig": {
     "extends": [

@@ -1,4 +1,4 @@
-const proxy = 'http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000';
+const proxy = 'https://www.msafofficial.tk';
 
 export async function fetchData(path,requestOptions) {
     let response;
@@ -26,7 +26,7 @@ export async function fetchData(path,requestOptions) {
                 body: JSON.stringify(payload)
             }
             console.log("Generate new key with refresh token")
-            await fetch('http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/refresh_session',requestoptions).then(res => res.json()).then(data=>{
+            await fetch('https://www.msafofficial.tk/refresh_session',requestoptions).then(res => res.json()).then(data=>{
                 if (data.message === "session refreshed") {
                     console.log("access token refreshed by using refreshtoken",data)
                     localStorage.accessToken  = data.accessToken

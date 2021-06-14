@@ -21,7 +21,7 @@ const Register = (props) => {
       body: JSON.stringify(payload),
     };
 
-    fetch("http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/register", requestOptions)
+    fetch("https://www.msafofficial.tk/register", requestOptions)
       .then((res) => res.json())
       .then((data) => {
         setProgressBar(false)

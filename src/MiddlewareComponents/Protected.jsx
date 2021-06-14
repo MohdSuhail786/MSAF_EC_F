@@ -17,7 +17,7 @@ const Protected = (props) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         }
-        fetch('http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/validate',requestOptions).then(res =>res.json()).then(data => {
+        fetch('https://www.msafofficial.tk/validate',requestOptions).then(res =>res.json()).then(data => {
             if (data.message === "Done") {
                 console.log("Validation done")
                 if (data.type === 2) 
@@ -37,7 +37,7 @@ const Protected = (props) => {
                     body: JSON.stringify(payload)
                 }
                 console.log("Generate new key with refresh token")
-                fetch('http://ec2-3-17-161-123.us-east-2.compute.amazonaws.com:3000/refresh_session',requestOptions).then(res => res.json()).then(data=>{
+                fetch('https://www.msafofficial.tk/refresh_session',requestOptions).then(res => res.json()).then(data=>{
                     if (data.message === "session refreshed") {
                         console.log("access token refreshed by using refreshtoken")
                         localStorage.accessToken  = data.accessToken
